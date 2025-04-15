@@ -19,27 +19,33 @@ public class LoginController {
     private final EmployeeAuthService employeeAuthService;
     private final EmployeeRepository employeeRepository;
 
-    // POST: Login Endpoint (Modified to accept id and password)
+    // ✅ POST: Login API — returns JSON response always
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Map<String, String> loginRequest) {
+    public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, String> loginRequest) {
         System.out.println("📩 /login endpoint hit!");
-        Long id = Long.parseLong(loginRequest.get("id"));
-        String password = loginRequest.get("password");
+        Long id;
+        try {
+            id = Long.parseLong(loginRequest.get("id"));
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().body(Map.of("message", "Invalid ID format"));
+        }
 
+        String password = loginRequest.get("password");
         Optional<Employee> optionalEmployee = employeeRepository.findById(id);
+
         if (optionalEmployee.isEmpty()) {
-            return ResponseEntity.status(401).body("Incorrect ID");
+            return ResponseEntity.status(401).body(Map.of("message", "Incorrect ID"));
         }
 
         boolean success = employeeAuthService.loginById(id, password);
         if (success) {
-            return ResponseEntity.ok("Login successful");
+            return ResponseEntity.ok(Map.of("message", "Login successful"));
         } else {
-            return ResponseEntity.status(401).body("Incorrect Password");
+            return ResponseEntity.status(401).body(Map.of("message", "Incorrect Password"));
         }
     }
 
-    // GET: Fetch All Employees (for admin or debugging purpose)
+    // ✅ GET: Fetch All Employees (for admin/debug use)
     @GetMapping("/login")
     public ResponseEntity<List<Employee>> getAllEmployees() {
         List<Employee> employees = employeeRepository.findAll();
