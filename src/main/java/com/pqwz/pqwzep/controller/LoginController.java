@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -18,24 +19,28 @@ public class LoginController {
     private final EmployeeAuthService employeeAuthService;
     private final EmployeeRepository employeeRepository;
 
-    // POST: Login Endpoint
+    // POST: Login Endpoint (Modified to accept id and password)
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody Map<String, String> loginRequest) {
         System.out.println("📩 /login endpoint hit!");
-        String name = loginRequest.get("name");
+        Long id = Long.parseLong(loginRequest.get("id"));
         String password = loginRequest.get("password");
 
-        boolean success = employeeAuthService.login(name, password);
+        Optional<Employee> optionalEmployee = employeeRepository.findById(id);
+        if (optionalEmployee.isEmpty()) {
+            return ResponseEntity.status(401).body("Incorrect ID");
+        }
 
+        boolean success = employeeAuthService.loginById(id, password);
         if (success) {
             return ResponseEntity.ok("Login successful");
         } else {
-            return ResponseEntity.status(401).body("Invalid Name or Password");
+            return ResponseEntity.status(401).body("Incorrect Password");
         }
     }
 
     // GET: Fetch All Employees (for admin or debugging purpose)
-    @GetMapping("/employees")
+    @GetMapping("/login")
     public ResponseEntity<List<Employee>> getAllEmployees() {
         List<Employee> employees = employeeRepository.findAll();
         return ResponseEntity.ok(employees);

@@ -15,13 +15,13 @@ public class EmployeeAuthService {
     private final EmployeeRepository employeeRepository;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(); // BCrypt initialized
 
-    public boolean login(String name, String password) {
+    public boolean loginById(Long id, String password) {
         System.out.println("/login endpoint hit!");
 
-        Optional<Employee> optionalEmployee = employeeRepository.findByName(name);
+        Optional<Employee> optionalEmployee = employeeRepository.findById(id);
 
         if (optionalEmployee.isEmpty()) {
-            System.out.println("Employee name not found: " + name);
+            System.out.println("Employee ID not found: " + id);
             return false;
         }
 
@@ -39,6 +39,7 @@ public class EmployeeAuthService {
         }
 
         return match;
+
     }
 }
 
