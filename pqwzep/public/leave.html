@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blue Revive - Employee Leave Portal</title> {/* Updated Title */}
+    <style>
+        /* Basic Reset & Body Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: #333;
+            color: #fff;
+            padding: 1rem 0;
+            border-bottom: #0779e4 3px solid;
+        }
+
+        header h1 {
+            text-align: center;
+            margin: 0;
+            padding-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        header nav {
+            display: flex; /* Use flexbox for alignment */
+            justify-content: center; /* Center nav items */
+            align-items: center; /* Vertically align items */
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            padding: 0 20px;
+        }
+
+        .nav-button {
+            background: #555;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-button:hover,
+        .nav-button.active {
+            background-color: #0779e4;
+        }
+
+        .user-info {
+            margin-left: auto; /* Pushes user info to the right */
+            padding: 10px 15px;
+            font-size: 0.9em;
+            color: #ccc;
+            margin-left: 20px; /* Add some space from buttons */
+        }
+
+
+        /* Main Content Area */
+        main {
+            padding: 20px;
+            max-width: 960px; /* Limit content width */
+            margin: 20px auto; /* Center content */
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        .content-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .content-section:last-child {
+            border-bottom: none;
+        }
+
+        h2, h3 {
+            color: #0779e4;
+            margin-bottom: 15px;
+        }
+
+        /* Dashboard Specific */
+        #leave-balances ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #leave-balances li {
+            background: #eef;
+            margin-bottom: 8px;
+            padding: 10px;
+            border-radius: 4px;
+            border-left: 5px solid #0779e4;
+        }
+
+        #leave-balances span {
+            font-weight: bold;
+        }
+
+        .quick-actions button {
+            background-color: #5cb85c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-right: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .quick-actions button:hover {
+            background-color: #4cae4c;
+        }
+
+
+        /* Form Styling */
+        #leave-application-form .form-group {
+            margin-bottom: 15px;
+        }
+
+        #leave-application-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        #leave-application-form input[type="text"],
+        #leave-application-form input[type="number"],
+        #leave-application-form input[type="date"],
+        #leave-application-form select,
+        #leave-application-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Include padding in width */
+        }
+
+        #leave-application-form input[readonly] {
+            background-color: #eee;
+            cursor: not-allowed;
+        }
+
+        #leave-application-form textarea {
+            resize: vertical; /* Allow vertical resizing */
+        }
+
+        .submit-button {
+            background-color: #0779e4;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-button:hover {
+            background-color: #055aab;
+        }
+
+        /* Table Styling */
+        #history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        #history-table th,
+        #history-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        #history-table th {
+            background-color: #f2f2f2;
+            color: #333;
+            font-weight: bold;
+        }
+
+        #history-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        #history-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Status Styling */
+        .status-pending { color: #f0ad4e; font-weight: bold; }
+        .status-approved { color: #5cb85c; font-weight: bold; }
+        .status-rejected { color: #d9534f; font-weight: bold; }
+
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 15px;
+            background: #333;
+            color: #fff;
+            font-size: 0.9em;
+        }
+
+        /* Basic Responsive */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+            header nav {
+                justify-content: space-around;
+            }
+            .user-info {
+                display: block; /* Stack user info below buttons */
+                text-align: center;
+                margin-left: 0;
+                margin-top: 10px;
+                width: 100%;
+            }
+            #leave-application-form input[type="text"],
+            #leave-application-form input[type="number"],
+            #leave-application-form input[type="date"],
+            #leave-application-form select,
+            #leave-application-form textarea {
+                 width: 95%; /* Adjust width for smaller screens */
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.5rem;
+            }
+            .nav-button {
+                padding: 8px 10px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Employee Leave Portal</h1>
+        <nav>
+            <button id="btn-dashboard" class="nav-button active">Dashboard</button>
+            <button id="btn-apply-leave" class="nav-button">Apply for Leave</button>
+            <button id="btn-leave-history" class="nav-button">Leave History</button>
+            <span class="user-info">Welcome, [Employee Name]! (ID: EMP12345)</span>
+        </nav>
+    </header>
+
+    <main>
+        <section id="dashboard" class="content-section">
+            <h2>Dashboard</h2>
+            <div id="leave-balances">
+                <h3>Your Leave Balances</h3>
+                <ul>
+                    <li>Casual Leave: <span id="casual-leave-balance">10</span> / 12 days</li>
+                    <li>Sick Leave: <span id="sick-leave-balance">7</span> / 10 days</li>
+                    </ul>
+            </div>
+             <div class="quick-actions">
+                 <button onclick="showSection('apply-leave')">Apply for New Leave</button>
+                <button onclick="showSection('leave-history')">View Leave History</button>
+            </div>
+        </section>
+
+        <section id="apply-leave" class="content-section" style="display: none;">
+            <h2>Apply for Leave</h2>
+            <form id="leave-application-form">
+                <div class="form-group">
+                    <label for="employee-id">Employee ID:</label>
+                    <input type="text" id="employee-id" name="employee-id" value="EMP12345" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="leave-type">Type of Leave:</label>
+                    <select id="leave-type" name="leave-type" required>
+                        <option value="">-- Select Leave Type --</option>
+                        <option value="casual">Casual Leave</option>
+                        <option value="sick">Sick Leave</option>
+                        <option value="earned">Earned Leave</option>
+                        </select>
+                </div>
+
+                <div class="form-group">
+                     <label for="number-of-days">Number of Days:</label>
+                    <input type="number" id="number-of-days" name="number-of-days" min="1" required>
+                     </div>
+                     <div class="form-group">
+                        <label for="start-date">Start Date:</label>
+                        <input type="date" id="start-date" name="start-date" required>
+                    </div>
+                <div class="form-group">
+                    <label for="reporting-manager">Reporting Manager:</label>
+                    <input type="text" id="reporting-manager" name="reporting-manager" value="[Manager Name]" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="comments">Additional Comments / Reason:</label>
+                    <textarea id="comments" name="comments" rows="4"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="submit-button">Submit Leave Application</button>
+                </div>
+            </form>
+        </section>
+
+        <section id="leave-history" class="content-section" style="display: none;">
+            <h2>Leave Application History</h2>
+            <table id="history-table">
+                <thead>
+                    <tr>
+                        <th>Submission Date</th>
+                        <th>Leave Type</th>
+                        <th>Days</th>
+                        <th>Status</th>
+                        <th>Manager Comments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2025-03-15</td>
+                        <td>Casual Leave</td>
+                        <td>2</td>
+                        <td class="status-approved">Approved</td>
+                        <td>Enjoy your time off.</td>
+                    </tr>
+                    <tr>
+                        <td>2025-04-10</td>
+                        <td>Sick Leave</td>
+                        <td>1</td>
+                        <td class="status-pending">Pending</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>2025-02-01</td>
+                        <td>Casual Leave</td>
+                        <td>3</td>
+                        <td class="status-rejected">Rejected</td>
+                        <td>Operational requirements.</td>
+                    </tr>
+                    </tbody>
+            </table>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; <span id="current-year"></span> Blue Revive. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.content-section');
+            const navButtons = document.querySelectorAll('.nav-button');
+            const leaveApplicationForm = document.getElementById('leave-application-form');
+            const leaveBalancesList = document.querySelector('#leave-balances ul');
+            const historyTableBody = document.querySelector('#history-table tbody');
+            const employeeIdInput = document.getElementById('employee-id');
+            const userInfoSpan = document.querySelector('.user-info'); // To potentially update name later
+    
+            // --- Configuration ---
+            const currentEmployeeId = 1; // <<<< HARDCODED: Replace with actual logged-in user ID
+            const apiBaseUrl = '/api/leaves'; // Adjust if your API is hosted elsewhere
+    
+            // --- Function to show/hide sections ---
+            window.showSection = function(sectionId) {
+                console.log("Showing section:", sectionId);
+                sections.forEach(section => {
+                    section.style.display = (section.id === sectionId) ? 'block' : 'none';
+                });
+                navButtons.forEach(button => {
+                    const buttonSectionId = button.id.substring(4).replace(/-/g, '');
+                    const targetSectionId = sectionId.replace(/-/g, '');
+                    button.classList.toggle('active', buttonSectionId === targetSectionId);
+                });
+    
+                // Fetch data when showing relevant sections (optional optimization)
+                if (sectionId === 'dashboard') {
+                     fetchBalances(currentEmployeeId);
+                } else if (sectionId === 'leave-history') {
+                     fetchHistory(currentEmployeeId);
+                }
+            }
+    
+            // --- Function to Fetch and Display Leave Balances ---
+            async function fetchBalances(employeeId) {
+                try {
+                    const response = await fetch(`${apiBaseUrl}/balances/${employeeId}`);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const balances = await response.json();
+                    displayBalances(balances);
+                } catch (error) {
+                    console.error('Error fetching leave balances:', error);
+                    if (leaveBalancesList) leaveBalancesList.innerHTML = '<li>Error loading balances.</li>';
+                }
+            }
+    
+            function displayBalances(balances) {
+                if (!leaveBalancesList) return;
+                leaveBalancesList.innerHTML = ''; // Clear existing balances
+                if (balances.length === 0) {
+                     leaveBalancesList.innerHTML = '<li>No leave balance information found.</li>';
+                     return;
+                }
+                balances.forEach(balance => {
+                    const li = document.createElement('li');
+                     // Assuming leaveType names like 'CASUAL', 'SICK' are returned
+                     // Capitalize first letter for display: Casual, Sick
+                    const displayLeaveType = balance.leaveType.charAt(0).toUpperCase() + balance.leaveType.slice(1).toLowerCase();
+                    li.innerHTML = `${displayLeaveType} Leave: <span id="${balance.leaveType.toLowerCase()}-leave-balance">${balance.remainingDays}</span> days remaining`;
+                    leaveBalancesList.appendChild(li);
+                });
+            }
+    
+            // --- Function to Fetch and Display Leave History ---
+            async function fetchHistory(employeeId) {
+                try {
+                    const response = await fetch(`${apiBaseUrl}/history/${employeeId}`);
+                     if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const history = await response.json();
+                    displayHistory(history);
+                } catch (error) {
+                    console.error('Error fetching leave history:', error);
+                    if (historyTableBody) historyTableBody.innerHTML = '<tr><td colspan="5">Error loading history.</td></tr>';
+                }
+            }
+    
+            function displayHistory(history) {
+                if (!historyTableBody) return;
+                historyTableBody.innerHTML = ''; // Clear existing history
+                 if (history.length === 0) {
+                     historyTableBody.innerHTML = '<tr><td colspan="5">No leave application history found.</td></tr>';
+                     return;
+                }
+                history.forEach(app => {
+                    const row = historyTableBody.insertRow();
+    
+                    // Format dates nicely (e.g., YYYY-MM-DD)
+                    const appliedDate = app.appliedOn ? new Date(app.appliedOn).toLocaleDateString('en-CA') : 'N/A'; // 'en-CA' gives YYYY-MM-DD
+                    const startDate = app.startDate ? new Date(app.startDate).toLocaleDateString('en-CA') : 'N/A';
+                    const endDate = app.endDate ? new Date(app.endDate).toLocaleDateString('en-CA') : 'N/A'; // endDate might not be present initially
+    
+                    // Capitalize first letter of status for display
+                    const displayStatus = app.status.charAt(0).toUpperCase() + app.status.slice(1).toLowerCase();
+    
+                    row.innerHTML = `
+                        <td>${appliedDate}</td>
+                        <td>${app.leaveType}</td>
+                        <td>${app.numberOfDays}</td>
+                        <td class="status-${app.status.toLowerCase()}">${displayStatus}</td>
+                        <td>${app.comments || ''}</td>
+                    `;
+                     // Consider adding manager comments if available in API response in future
+                     // row.insertCell().textContent = app.managerComments || '';
+                });
+            }
+    
+            // --- Function to Handle Leave Application Submission ---
+            async function handleApplyLeaveSubmit(event) {
+                event.preventDefault(); // Prevent default form submission
+    
+                const formData = new FormData(leaveApplicationForm);
+                const requestBody = {
+                    employeeId: currentEmployeeId, // Use the hardcoded/logged-in user ID
+                    leaveType: formData.get('leave-type'),
+                    numberOfDays: parseInt(formData.get('number-of-days'), 10), // Ensure it's a number
+                    startDate: formData.get('start-date'), // Get the start date
+                    comments: formData.get('comments')
+                };
+    
+                 // Basic validation
+                if (!requestBody.leaveType || !requestBody.numberOfDays || !requestBody.startDate || requestBody.numberOfDays <= 0) {
+                    alert('Please fill in Leave Type, a valid Start Date, and Number of Days correctly.');
+                    return;
+                }
+    
+                console.log('Submitting leave application:', requestBody); // For debugging
+    
+                try {
+                    const response = await fetch(`${apiBaseUrl}/apply`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(requestBody),
+                    });
+    
+                    if (!response.ok) {
+                         // Try to get error message from backend if available
+                         let errorMsg = `HTTP error! status: ${response.status}`;
+                         try {
+                             const errorData = await response.json();
+                             errorMsg = errorData.message || errorMsg; // Use backend message if present
+                         } catch (e) { /* Ignore if response is not JSON */ }
+                         throw new Error(errorMsg);
+                    }
+    
+                     // Assuming backend returns the created application or a success message
+                    const result = await response.json();
+                    console.log('Application submitted successfully:', result);
+                    alert('Leave application submitted successfully!');
+    
+                    leaveApplicationForm.reset(); // Clear the form
+                    fetchBalances(currentEmployeeId); // Refresh balances
+                    fetchHistory(currentEmployeeId); // Refresh history
+                    showSection('leave-history'); // Optionally switch to history view
+    
+                } catch (error) {
+                    console.error('Error submitting leave application:', error);
+                    alert(`Error submitting application: ${error.message}`);
+                }
+            }
+    
+            // --- Initial Setup ---
+    
+            // Set current year in footer
+            const currentYearSpan = document.getElementById('current-year');
+            if (currentYearSpan) {
+                currentYearSpan.textContent = new Date().getFullYear();
+            }
+    
+            // Add event listeners to nav buttons
+            navButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const sectionId = this.id.substring(4);
+                    showSection(sectionId);
+                });
+            });
+    
+            // Add submit listener to the form
+            if (leaveApplicationForm) {
+                leaveApplicationForm.addEventListener('submit', handleApplyLeaveSubmit);
+            }
+    
+            // Populate Employee ID field (assuming it's known)
+            if (employeeIdInput) {
+                employeeIdInput.value = currentEmployeeId;
+            }
+            // You might fetch employee NAME here from another API if available to update user-info
+             // if (userInfoSpan) userInfoSpan.textContent = `Welcome, [Fetched Name]! (ID: ${currentEmployeeId})`
+    
+    
+            // Initialize the view - show dashboard and fetch initial data
+            showSection('dashboard'); // This will also trigger fetchBalances
+            // fetchHistory(currentEmployeeId); // Fetch history initially as well, even if not shown first
+    
+    
+        });
+    </script>
+</body>
+</html>
