@@ -23,8 +23,10 @@ public class Employee {
 
     @Column(name = "password", nullable = false)
     private String password;
-}
 
+    @Column(name = "manager_name", nullable = false)
+    private String managerName;
+}
 
 /*
 
