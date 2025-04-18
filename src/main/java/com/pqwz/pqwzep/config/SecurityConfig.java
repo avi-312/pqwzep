@@ -20,13 +20,15 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> {})  // ✅ Enable CORS
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll().requestMatchers(
+                        .requestMatchers(
                                 "/api/auth/**",
                                 "/api/openings/**",
                                 "/api/leaves/balances/**",
                                 "/api/leaves/apply",
-                                "/api/leaves/history/**"     // ✅ Add this line
+                                "/api/leaves/history/**",
+                                "/api/employees/**"             // ✅ Add this line to allow manager fetch
                         ).permitAll()
+
 
                         .anyRequest().authenticated()
                 )
