@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PQWZ Leave Portal</title>
+    <title>Apply Leave - PQWZ Portal</title>
     <style>
         /* Basic Reset & Body */
         * {
@@ -20,7 +20,7 @@
             min-height: 100vh;
 
             /* Background Image Settings */
-            background-image: url('bluerevive.jpg');
+            background-image: url('bluerevive.jpg'); /* Assuming bluerevive.jpg is in the same folder */
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center center;
@@ -32,13 +32,14 @@
         .app-header {
             background-color: #003f7f; /* Dark Navy Blue */
             padding: 15px 30px;
+            flex-shrink: 0;
         }
 
         .app-header .logo {
             color: #ffffff;
             font-size: 1.8em;
             font-weight: bold;
-            text-decoration: none;
+            text-decoration: none; /* Link to main leaves page */
         }
 
         .app-header .logo:hover {
@@ -49,7 +50,6 @@
         .page-body {
             display: flex;
             flex-grow: 1;
-            background-color: rgba(255, 255, 255, 0.1); /* Optional: Subtle overlay */
         }
 
         /* Sidebar - Dark Navy Blue */
@@ -87,9 +87,10 @@
             word-wrap: break-word;
         }
 
+        /* Updated font size for ID/Email */
         .employee-details p {
             margin-bottom: 5px;
-            font-size: 0.95em; /* Keeping previous size */
+            font-size: 1.0em; /* Increased size */
             color: #e9ecef;
         }
 
@@ -98,18 +99,20 @@
             font-weight: bold;
         }
 
+        /* Updated font size for Name */
         .employee-details #employee-name {
             font-weight: bold;
-            font-size: 1.1em; /* Keeping previous size */
+            font-size: 1.2em; /* Increased size */
             color: #ffffff;
         }
 
+        /* Sidebar Nav Styles */
         .sidebar-nav {
             width: 100%;
             display: flex;
             flex-direction: column;
             gap: 10px; /* This gap creates space between buttons */
-            margin-top: 15px; /* Add space above buttons */
+            margin-top: 15px; /* Add space above the buttons */
         }
 
         /* UPDATED Sidebar Button Style */
@@ -134,82 +137,86 @@
             color: #003f7f; /* Darker blue text on hover */
         }
 
+
         /* Main Content Area */
         .main-content {
             flex-grow: 1;
             padding: 30px;
             overflow-y: auto;
-        }
-
-        .leave-boxes-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-        }
-
-        /* Leave Box - White Background */
-        .leave-box {
-            background-color: #ffffff;
-            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
             border-radius: 8px;
-            border: 1px solid #dee2e6;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            margin: 20px;
+        }
+
+        /* Form Styling */
+        #apply-leave-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        #apply-leave-form h2 {
             text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            min-height: 180px;
             color: #003f7f;
+            margin-bottom: 25px;
         }
 
-        .leave-box h3 {
-            font-size: 1.1em;
-            margin-bottom: 15px;
-            color: #003f7f;
-        }
-
-        .leave-box .remaining-info {
-            font-size: 1.2em;
+        .form-group {
             margin-bottom: 20px;
-            color: #003f7f;
         }
 
-        .leave-box .remaining-days {
-            font-weight: bold;
-            font-size: 1.4em;
-            color: #0056b3;
+        .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #495057;
         }
 
-        /* Apply Button - Blue Background */
-        .apply-button {
-            padding: 8px 15px;
-            background-color: #007bff;
+        .form-group input[type="text"],
+        .form-group input[type="date"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 1em;
+            color: #495057;
+            height: calc(2.25rem + 2px); /* Consistent height */
+        }
+
+        .form-group textarea {
+            height: auto;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group input[readonly] {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+            color: #6c757d;
+        }
+
+        /* Apply Leave Button Style (Keeping Blue) */
+         .apply-submit-button {
+            padding: 12px 25px;
+            background-color: #007bff; /* Blue */
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 0.9em;
+            font-size: 1.1em;
             transition: background-color 0.3s ease;
-            align-self: center;
+            display: block;
             width: fit-content;
+            margin: 20px auto 0 auto;
         }
 
-        .apply-button:hover {
-            background-color: #0056b3;
+        .apply-submit-button:hover {
+            background-color: #0056b3; /* Darker Blue */
         }
+
 
          /* Responsive adjustments */
-         @media (max-width: 992px) {
-             .leave-boxes-grid {
-                 grid-template-columns: repeat(2, 1fr);
-             }
-             .sidebar {
-                 width: 220px;
-             }
-         }
-
          @media (max-width: 768px) {
              .page-body {
                  flex-direction: column;
@@ -219,41 +226,41 @@
                  height: auto;
                  padding: 15px;
              }
-             .profile-pic-container {
-                 width: 80px;
-                 height: 80px;
-                 margin-bottom: 10px;
-             }
-              .sidebar-nav {
+             /* Added Responsive Sidebar Nav Styles Back */
+             .sidebar-nav {
                  flex-direction: row;
                  justify-content: center;
                  flex-wrap: wrap;
                  gap: 8px;
-                 margin-top: 15px; /* Ensure space after details */
-                 margin-bottom: 0; /* Remove bottom margin if stacked */
+                 margin-top: 15px;
+                 margin-bottom: 0;
              }
              .sidebar-button {
                  width: auto;
                  padding: 8px 12px;
              }
+             /* End Added Responsive Sidebar Nav Styles */
              .main-content {
+                 margin: 10px;
                  padding: 20px;
              }
-             .leave-boxes-grid {
-                grid-template-columns: repeat(1, 1fr);
-                 gap: 15px;
+             #apply-leave-form {
+                 max-width: 100%;
              }
-             .leave-box {
-                 min-height: 160px;
+             .form-group input[type="text"],
+             .form-group input[type="date"],
+             .form-group textarea,
+             .form-group select {
+                 font-size: 0.95em;
              }
-         }
 
+         }
     </style>
 </head>
 <body>
 
     <header class="app-header">
-        <a href="#" class="logo">PQWZ</a>
+        <a href="leaves.html" class="logo">PQWZ</a> 
     </header>
 
     <div class="page-body">
@@ -274,67 +281,91 @@
         </aside>
 
         <main class="main-content">
-            <div class="leave-boxes-grid">
-                <div class="leave-box" id="casual-leave-box">
-                    <h3>Casual Leaves</h3>
-                    <p class="remaining-info">
-                        <span class="remaining-days">10 / 12</span> Days Available
-                    </p>
-                    <button class="apply-button">Apply Leave</button>
+            <form id="apply-leave-form">
+                <h2>Apply for Leave</h2>
+
+                <div class="form-group">
+                    <label for="apply-employee-id">Employee ID:</label>
+                    <input type="text" id="apply-employee-id" name="employeeId" value="123456" readonly>
                 </div>
 
-                <div class="leave-box" id="sick-leave-box">
-                    <h3>Sick Leaves</h3>
-                    <p class="remaining-info">
-                         <span class="remaining-days">8 / 10</span> Days Available
-                    </p>
-                    <button class="apply-button">Apply Leave</button>
+                <div class="form-group">
+                    <label for="apply-employee-name">Employee Name:</label>
+                    <input type="text" id="apply-employee-name" name="employeeName" value="Employee Name" readonly>
                 </div>
 
-                <div class="leave-box" id="personal-leave-box">
-                    <h3>Personal Leave</h3>
-                     <p class="remaining-info">
-                        <span class="remaining-days">5 / 5</span> Days Available
-                     </p>
-                    <button class="apply-button">Apply Leave</button>
+                <div class="form-group">
+                    <label for="start-date">Start from:</label>
+                    <input type="date" id="start-date" name="startDate" required>
                 </div>
 
-                <div class="leave-box" id="bereavement-leave-box">
-                    <h3>Bereavement Leave</h3>
-                    <p class="remaining-info">
-                        <span class="remaining-days">3 / 3</span> Days Available
-                    </p>
-                    <button class="apply-button">Apply Leave</button>
+                <div class="form-group">
+                    <label for="end-date">End Date:</label>
+                    <input type="date" id="end-date" name="endDate" required>
                 </div>
 
-                <div class="leave-box" id="unpaid-leave-box">
-                    <h3>Unpaid Leave</h3>
-                    <p class="remaining-info">
-                         <span class="remaining-days">N/A</span> Available
-                    </p>
-                    <button class="apply-button">Apply Leave</button>
+                <div class="form-group">
+                    <label for="leave-type">Leave Type:</label>
+                    <select id="leave-type" name="leaveType" required>
+                        <option value="" disabled selected>-- Select Leave Type --</option>
+                        <option value="casual">Casual Leaves</option>
+                        <option value="sick">Sick Leaves</option>
+                        <option value="personal">Personal Leave</option>
+                        <option value="bereavement">Bereavement Leave</option>
+                        <option value="unpaid">Unpaid Leave</option>
+                        <option value="maternity_paternity">Maternity/Paternity Leave</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="comments">Comments (Reason for Leave):</label>
+                    <textarea id="comments" name="comments" rows="4" placeholder="Enter reason for leave (optional)"></textarea>
                 </div>
 
-                <div class="leave-box" id="maternity-paternity-leave-box">
-                    <h3>Maternity/Paternity Leave</h3>
-                    <p class="remaining-info">
-                        <span class="remaining-days">90 / 180</span> Days Available
-                    </p>
-                    <button class="apply-button">Apply Leave</button>
+                <div class="form-group">
+                    <label for="apply-reporting-manager">Reporting Manager:</label>
+                    <input type="text" id="apply-reporting-manager" name="reportingManager" value="[Manager Name]" readonly>
                 </div>
-            </div>
+
+                <div class="form-group">
+                    <button type="submit" class="apply-submit-button">Apply Leave</button>
+                </div>
+
+            </form>
         </main>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Placeholder listeners for sidebar buttons
+            // Placeholder for Auto-filling Readonly Fields
+            // Add fetch() logic here later
+
+            // Placeholder for Form Submission
+            const form = document.getElementById('apply-leave-form');
+            if (form) {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    // Example: Get selected leave type value
+                    const selectedLeaveType = document.getElementById('leave-type').value;
+                    if (!selectedLeaveType) {
+                         alert('Please select a Leave Type.');
+                         return; // Prevent submission if default option is selected
+                    }
+                    alert(`Apply Leave button clicked! Leave Type: ${selectedLeaveType} (Functionality requires JavaScript backend integration)`);
+                    // Add actual fetch() logic here later, including the selectedLeaveType
+                });
+            }
+
+            // Added Placeholder for Sidebar Button Clicks Back
              const sidebarButtons = document.querySelectorAll('.sidebar-button');
              sidebarButtons.forEach(button => {
                  button.addEventListener('click', function(event) {
                      const buttonText = event.target.textContent;
                      // Example: Redirect or load content based on button clicked
-                      if (buttonText === 'Calendar') {
+                     if (buttonText === 'View Leaves') {
+                         // Potentially redirect to leaves.html
+                         // window.location.href = 'leaves.html';
+                         alert('View Leaves clicked! (Implement navigation)');
+                     } else if (buttonText === 'Calendar') {
                           // Potentially redirect to calendar.html
                          // window.location.href = 'calendar.html';
                           alert('Calendar clicked! (Implement navigation)');
@@ -342,16 +373,14 @@
                           // Potentially redirect to viewholidays.html
                          // window.location.href = 'viewholidays.html';
                           alert('View Holidays clicked! (Implement navigation)');
-                     } else if (buttonText === 'View Leaves') {
-                          // Potentially redirect to viewleaves.html
-                         // window.location.href = 'viewleaves.html';
-                         alert('View Leaves clicked! (Implement navigation)');
                      }
                      else {
                           alert(`${buttonText} clicked! (Implement functionality)`);
                      }
                  });
              });
+
+
         });
     </script>
 

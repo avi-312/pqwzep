@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar - PQWZ Portal</title>
+    <style>
+        /* Basic Reset & Body */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+
+            /* Background Image Settings */
+            background-image: url('bluerevive.jpg'); /* Path to your image */
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            background-color: #f8f9fa; /* Fallback color */
+        }
+
+        /* Header */
+        .app-header {
+            background-color: #003f7f; /* Dark Navy Blue */
+            padding: 15px 30px;
+            flex-shrink: 0;
+        }
+
+        .app-header .logo {
+            color: #ffffff;
+            font-size: 1.8em;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .app-header .logo:hover {
+            color: #cce5ff;
+        }
+
+        /* Page Body Layout */
+        .page-body {
+            display: flex;
+            flex-grow: 1;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background-color: #003f7f; /* Dark Navy Blue sidebar */
+            padding: 25px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+            color: #ffffff;
+        }
+
+        .profile-pic-container {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 15px;
+            border: 3px solid #ffffff;
+            flex-shrink: 0;
+            background-color: #e9ecef;
+        }
+
+        .profile-pic-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .employee-details {
+            text-align: center;
+            margin-bottom: 25px;
+            word-wrap: break-word;
+        }
+
+        .employee-details p {
+            margin-bottom: 5px;
+            font-size: 1.0em; /* Increased size */
+            color: #e9ecef;
+        }
+
+        .employee-details #employee-id,
+        .employee-details #employee-email {
+            font-weight: bold;
+        }
+
+        .employee-details #employee-name {
+            font-weight: bold;
+            font-size: 1.2em; /* Increased size */
+            color: #ffffff;
+        }
+
+        /* Sidebar Nav Styles */
+        .sidebar-nav {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* This gap creates space between buttons */
+            margin-top: 15px; /* Add space above the buttons */
+        }
+
+        /* Sidebar Button Style */
+        .sidebar-button {
+            display: block;
+            width: 100%;
+            padding: 12px 15px;
+            background-color: #ffffff; /* White background */
+            color: #0056b3; /* Dark blue text */
+            border: 1px solid #dee2e6; /* Subtle border */
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 1em;
+            font-weight: 500; /* Slightly bolder text */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Sidebar Button Hover Style */
+        .sidebar-button:hover {
+            background-color: #e9ecef; /* Light grey background on hover */
+            color: #003f7f; /* Darker blue text on hover */
+        }
+
+
+        /* Main Content Area */
+        .main-content {
+            flex-grow: 1;
+            padding: 30px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Calendar Controls (Dropdowns) */
+        .calendar-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 5px;
+            flex-shrink: 0; /* Prevent controls from shrinking */
+        }
+
+        .calendar-controls label {
+            font-weight: bold;
+            margin-right: 5px;
+            color: #003f7f;
+        }
+
+        .calendar-controls select {
+            padding: 5px 8px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+
+        /* Large Calendar Container */
+        .calendar-large {
+            background-color: transparent;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .calendar-weekdays-large {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            padding: 10px 0;
+            font-weight: bold;
+            color: #003f7f;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+
+        .calendar-dates-large {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            flex-grow: 1;
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        /* UPDATED: Increased font-size */
+        .calendar-day-large {
+            min-height: 80px;
+            padding: 8px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            background-color: rgba(255, 255, 255, 0.6);
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            font-size: 1.1em; /* Made date numbers bigger */
+            font-weight: bold; /* Keep all date numbers bold */
+        }
+
+        .calendar-day-large.empty {
+            background-color: rgba(240, 240, 240, 0.4);
+            font-weight: normal; /* Keep empty cells not bold */
+        }
+
+        /* Date Color Coding */
+        .calendar-day-large.working-day { color: #28a745; }
+        .calendar-day-large.weekend { color: #000000; }
+        .calendar-day-large.holiday { color: #dc3545; font-weight: bold; }
+
+
+         /* Responsive adjustments */
+         @media (max-width: 992px) {
+             .sidebar {
+                 width: 220px;
+             }
+             .calendar-day-large {
+                 min-height: 60px;
+                 padding: 5px;
+                 font-size: 1.0em; /* Adjusted responsive size */
+             }
+         }
+
+         @media (max-width: 768px) {
+             .page-body {
+                 flex-direction: column;
+             }
+             .sidebar {
+                 width: 100%;
+                 height: auto;
+                 padding: 15px;
+             }
+             /* Adjust sidebar nav for horizontal layout */
+             .sidebar-nav {
+                 flex-direction: row;
+                 justify-content: center;
+                 flex-wrap: wrap;
+                 gap: 8px;
+                 margin-top: 15px; /* Ensure space after details */
+                 margin-bottom: 0; /* Remove bottom margin if stacked */
+             }
+             .sidebar-button {
+                 width: auto; /* Buttons take natural width */
+                 padding: 8px 12px;
+             }
+             .main-content {
+                 padding: 15px;
+             }
+             .calendar-controls {
+                 flex-direction: column;
+                 align-items: stretch;
+                 gap: 10px;
+             }
+              .calendar-controls div {
+                 display: flex;
+                 justify-content: space-between;
+             }
+             .calendar-weekdays-large {
+                 font-size: 0.8em;
+                 padding: 8px 0;
+             }
+             .calendar-day-large {
+                 min-height: 45px;
+                 font-size: 0.9em; /* Adjusted responsive size */
+                 padding: 4px;
+             }
+         }
+    </style>
+</head>
+<body>
+
+    <header class="app-header">
+        <a href="leaves.html" class="logo">PQWZ</a>
+    </header>
+
+    <div class="page-body">
+        <aside class="sidebar">
+            <div class="profile-pic-container">
+                <img src="https://via.placeholder.com/150/003f7f/ffffff?text=User" alt="Employee Profile Picture">
+            </div>
+            <div class="employee-details">
+                <p id="employee-name">Employee Name</p>
+                <p id="employee-id">ID: 123456</p>
+                <p id="employee-email">employee.email@pqwz.com</p>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="sidebar-button">View Leaves</button>
+                <button class="sidebar-button">Calendar</button>
+                <button class="sidebar-button">View Holidays</button>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="calendar-controls">
+                <div>
+                    <label for="month-select">Month:</label>
+                    <select id="month-select" name="month">
+                        <option value="0">January</option>
+                        <option value="1">February</option>
+                        <option value="2">March</option>
+                        <option value="3" selected>April</option>
+                        <option value="4">May</option>
+                        <option value="5">June</option>
+                        <option value="6">July</option>
+                        <option value="7">August</option>
+                        <option value="8">September</option>
+                        <option value="9">October</option>
+                        <option value="10">November</option>
+                        <option value="11">December</option>
+                    </select>
+                </div>
+                <div>
+                     <label for="year-select">Year:</label>
+                    <select id="year-select" name="year">
+                        <option value="2024">2024</option>
+                        <option value="2025" selected>2025</option>
+                        <option value="2026">2026</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="calendar-container" class="calendar-large">
+                <div class="calendar-weekdays-large">
+                    <div>Sun</div>
+                    <div>Mon</div>
+                    <div>Tue</div>
+                    <div>Wed</div>
+                    <div>Thu</div>
+                    <div>Fri</div>
+                    <div>Sat</div>
+                </div>
+                <div class="calendar-dates-large">
+                    <div class="calendar-day-large empty"></div> <div class="calendar-day-large empty"></div> <div class="calendar-day-large working-day">1</div>
+                    <div class="calendar-day-large working-day">2</div>
+                    <div class="calendar-day-large working-day">3</div>
+                    <div class="calendar-day-large working-day">4</div>
+                    <div class="calendar-day-large weekend">5</div> <div class="calendar-day-large weekend">6</div> <div class="calendar-day-large working-day">7</div>
+                    <div class="calendar-day-large working-day">8</div>
+                    <div class="calendar-day-large working-day">9</div>
+                    <div class="calendar-day-large working-day">10</div>
+                    <div class="calendar-day-large holiday">11</div> <div class="calendar-day-large weekend">12</div> <div class="calendar-day-large weekend">13</div> <div class="calendar-day-large working-day">14</div>
+                    <div class="calendar-day-large working-day">15</div>
+                    <div class="calendar-day-large working-day">16</div>
+                    <div class="calendar-day-large working-day">17</div>
+                    <div class="calendar-day-large working-day">18</div>
+                    <div class="calendar-day-large weekend">19</div> <div class="calendar-day-large weekend">20</div> <div class="calendar-day-large holiday">21</div> <div class="calendar-day-large working-day">22</div>
+                    <div class="calendar-day-large working-day">23</div>
+                    <div class="calendar-day-large working-day">24</div>
+                    <div class="calendar-day-large working-day">25</div>
+                    <div class="calendar-day-large weekend">26</div> <div class="calendar-day-large weekend">27</div> <div class="calendar-day-large working-day">28</div>
+                    <div class="calendar-day-large working-day">29</div>
+                    <div class="calendar-day-large working-day">30</div>
+                    <div class="calendar-day-large empty"></div> <div class="calendar-day-large empty"></div> <div class="calendar-day-large empty"></div>
+                    </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Placeholder for Dropdown Change & Calendar Generation
+            const monthSelect = document.getElementById('month-select');
+            const yearSelect = document.getElementById('year-select');
+
+            function updateCalendarDisplay() {
+                const selectedMonth = parseInt(monthSelect.value, 10);
+                const selectedYear = parseInt(yearSelect.value, 10);
+                console.log(`Month/Year Changed: ${selectedMonth + 1}/${selectedYear}`);
+                // Add actual JS logic here to regenerate calendar dates based on selection
+                alert('Calendar display update requires JavaScript implementation!');
+            }
+
+            if(monthSelect) monthSelect.addEventListener('change', updateCalendarDisplay);
+            if(yearSelect) yearSelect.addEventListener('change', updateCalendarDisplay);
+
+            // Placeholder for Sidebar Button Clicks (Optional)
+            const sidebarButtons = document.querySelectorAll('.sidebar-button');
+             sidebarButtons.forEach(button => {
+                 button.addEventListener('click', function(event) {
+                     const buttonText = event.target.textContent;
+                     // Example: Redirect or load content based on button clicked
+                     if (buttonText === 'View Leaves') {
+                         // Potentially redirect to leaves.html
+                         // window.location.href = 'leaves.html';
+                         alert('View Leaves clicked! (Implement navigation)');
+                     } else if (buttonText === 'View Holidays') {
+                          // Potentially redirect to viewholidays.html
+                         // window.location.href = 'viewholidays.html';
+                          alert('View Holidays clicked! (Implement navigation)');
+                     }
+                     else {
+                          alert(`${buttonText} clicked! (Implement functionality)`);
+                     }
+                 });
+             });
+
+        });
+    </script>
+
+</body>
+</html>

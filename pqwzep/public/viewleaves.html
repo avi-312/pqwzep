@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Leave Status - PQWZ Portal</title>
+    <style>
+        /* Basic Reset & Body */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+
+            /* Background Image Settings */
+            background-image: url('bluerevive.jpg'); /* Path to your image */
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            background-color: #f8f9fa; /* Fallback color */
+        }
+
+        /* Header - UPDATED to Dark Navy Blue */
+        .app-header {
+            background-color: #003f7f; /* Dark Navy Blue */
+            padding: 15px 30px;
+            flex-shrink: 0;
+        }
+
+        .app-header .logo {
+            color: #ffffff;
+            font-size: 1.8em;
+            font-weight: bold;
+            text-decoration: none; /* Link to main leaves page */
+        }
+
+        .app-header .logo:hover {
+            color: #cce5ff;
+        }
+
+        /* Page Body Layout */
+        .page-body {
+            display: flex;
+            flex-grow: 1;
+        }
+
+        /* Sidebar - Dark Navy Blue */
+        .sidebar {
+            width: 260px;
+            background-color: #003f7f; /* Dark Navy Blue */
+            padding: 25px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+            color: #ffffff;
+        }
+
+        .profile-pic-container {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 15px;
+            border: 3px solid #ffffff;
+            flex-shrink: 0;
+            background-color: #e9ecef;
+        }
+
+        .profile-pic-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .employee-details {
+            text-align: center;
+            margin-bottom: 25px;
+            word-wrap: break-word;
+        }
+
+        .employee-details p {
+            margin-bottom: 5px;
+            font-size: 1.0em; /* Increased size */
+            color: #e9ecef;
+        }
+
+        .employee-details #employee-id,
+        .employee-details #employee-email {
+            font-weight: bold;
+        }
+
+        .employee-details #employee-name {
+            font-weight: bold;
+            font-size: 1.2em; /* Increased size */
+            color: #ffffff;
+        }
+
+        /* Sidebar Nav Styles */
+        .sidebar-nav {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* This gap creates space between buttons */
+            margin-top: 15px; /* Add space above the buttons */
+        }
+
+        /* UPDATED Sidebar Button Style */
+        .sidebar-button {
+            display: block;
+            width: 100%;
+            padding: 12px 15px;
+            background-color: #ffffff; /* White background */
+            color: #0056b3; /* Dark blue text */
+            border: 1px solid #dee2e6; /* Subtle border */
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 1em;
+            font-weight: 500; /* Slightly bolder text */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* UPDATED Sidebar Button Hover Style */
+        .sidebar-button:hover {
+            background-color: #e9ecef; /* Light grey background on hover */
+            color: #003f7f; /* Darker blue text on hover */
+        }
+
+
+        /* Main Content Area */
+        .main-content {
+            flex-grow: 1;
+            padding: 30px;
+            overflow-y: auto;
+            /* Background ensures readability over body image */
+            background-color: rgba(255, 255, 255, 0.92);
+            border-radius: 8px;
+            margin: 20px;
+        }
+
+        .main-content h2 {
+            text-align: center;
+            color: #003f7f; /* Dark blue heading */
+            margin-bottom: 25px;
+        }
+
+        /* Status Boxes Layout */
+        .status-boxes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive columns */
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .status-box {
+            padding: 25px 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border: 1px solid #dee2e6;
+        }
+
+        /* Optional: Subtle background colors for status boxes */
+        #applied-box { background-color: #fff3cd; border-left: 5px solid #ffeeba; } /* Light Yellow */
+        #rejected-box { background-color: #f8d7da; border-left: 5px solid #f5c6cb;} /* Light Red */
+        #accepted-box { background-color: #d4edda; border-left: 5px solid #c3e6cb;} /* Light Green */
+
+        .status-box h3 {
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            color: #495057;
+        }
+
+        .view-status-button {
+            padding: 8px 18px;
+            background-color: #007bff; /* Primary blue button */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: background-color 0.3s ease;
+        }
+
+        .view-status-button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        /* Leave Details Display Area */
+        #leave-details-display {
+            margin-top: 20px;
+            padding: 25px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            background-color: #f8f9fa; /* Light background for details */
+            max-width: 600px; /* Limit width */
+            margin-left: auto;
+            margin-right: auto; /* Center the details box */
+        }
+
+        #leave-details-display h4 {
+            color: #0056b3;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 10px;
+        }
+
+        #leave-details-display p {
+            margin-bottom: 10px;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        #leave-details-display p strong {
+            display: inline-block;
+            width: 150px; /* Align labels */
+            color: #495057;
+        }
+
+         /* Responsive adjustments */
+         @media (max-width: 768px) {
+             .page-body {
+                 flex-direction: column;
+             }
+             .sidebar {
+                 width: 100%;
+                 height: auto;
+                 padding: 15px;
+             }
+             /* Added Responsive Sidebar Nav Styles Back */
+             .sidebar-nav {
+                 flex-direction: row; /* Buttons side-by-side */
+                 justify-content: center;
+                 flex-wrap: wrap;
+                 gap: 8px;
+                 margin-top: 15px; /* Ensure space after details */
+                 margin-bottom: 0; /* Remove bottom margin if stacked */
+             }
+             .sidebar-button {
+                 width: auto; /* Buttons take natural width */
+                 padding: 8px 12px;
+             }
+             /* End Added Responsive Sidebar Nav Styles */
+             .main-content {
+                 margin: 10px;
+                 padding: 15px;
+             }
+             .status-boxes-grid {
+                 grid-template-columns: 1fr; /* Stack boxes */
+             }
+             #leave-details-display {
+                 max-width: 100%;
+             }
+              #leave-details-display p strong {
+                 width: auto; /* Don't align labels on small screens */
+                 display: block;
+                 margin-bottom: 3px;
+             }
+         }
+    </style>
+</head>
+<body>
+
+    <header class="app-header">
+        <a href="leaves.html" class="logo">PQWZ</a> 
+    </header>
+
+    <div class="page-body">
+        <aside class="sidebar">
+            <div class="profile-pic-container">
+                <img src="https://via.placeholder.com/150/003f7f/ffffff?text=User" alt="Employee Profile Picture">
+            </div>
+            <div class="employee-details">
+                <p id="employee-name">Employee Name</p>
+                <p id="employee-id">ID: 123456</p>
+                <p id="employee-email">employee.email@pqwz.com</p>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="sidebar-button">View Leaves</button>
+                <button class="sidebar-button">Calendar</button>
+                <button class="sidebar-button">View Holidays</button>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <h2>Leave Application Status</h2>
+
+            <div class="status-boxes-grid">
+                <div class="status-box" id="applied-box">
+                    <h3>Applied Leaves</h3>
+                    <button class="view-status-button" data-status="Applied">View</button>
+                </div>
+                <div class="status-box" id="rejected-box">
+                    <h3>Rejected Leaves</h3>
+                    <button class="view-status-button" data-status="Rejected">View</button>
+                </div>
+                <div class="status-box" id="accepted-box">
+                    <h3>Accepted Leaves</h3>
+                    <button class="view-status-button" data-status="Accepted">View</button>
+                </div>
+            </div>
+
+            <div id="leave-details-display" style="display: none;">
+                <h4>Leave Details (<span id="details-status-title">Status</span>)</h4>
+                <p><strong>Employee ID:</strong> <span id="details-employee-id"></span></p>
+                <p><strong>Employee Name:</strong> <span id="details-employee-name"></span></p>
+                <p><strong>Start from:</strong> <span id="details-start-date"></span></p>
+                <p><strong>End Date:</strong> <span id="details-end-date"></span></p>
+                <p><strong>Comments:</strong> <span id="details-comments"></span></p>
+                <p><strong>Reporting Manager:</strong> <span id="details-reporting-manager"></span></p>
+                </div>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const viewButtons = document.querySelectorAll('.view-status-button');
+            const detailsDisplay = document.getElementById('leave-details-display');
+            const detailsStatusTitle = document.getElementById('details-status-title');
+            const detailsEmployeeId = document.getElementById('details-employee-id');
+            const detailsEmployeeName = document.getElementById('details-employee-name');
+            const detailsStartDate = document.getElementById('details-start-date');
+            const detailsEndDate = document.getElementById('details-end-date');
+            const detailsComments = document.getElementById('details-comments');
+            const detailsReportingManager = document.getElementById('details-reporting-manager');
+
+            // Placeholder Data (Replace with actual data fetching)
+            const placeholderData = {
+                Applied: {
+                    employeeId: "123456",
+                    employeeName: "Employee Name",
+                    startDate: "2025-05-10",
+                    endDate: "2025-05-11",
+                    comments: "Personal Appointment.",
+                    reportingManager: "Manager A"
+                },
+                Rejected: {
+                    employeeId: "123456",
+                    employeeName: "Employee Name",
+                    startDate: "2025-04-01",
+                    endDate: "2025-04-02",
+                    comments: "Vacation Request - Denied due to project deadline.",
+                    reportingManager: "Manager B"
+                },
+                Accepted: {
+                    employeeId: "123456",
+                    employeeName: "Employee Name",
+                    startDate: "2025-03-15",
+                    endDate: "2025-03-15",
+                    comments: "Sick Leave.",
+                    reportingManager: "Manager A"
+                }
+            };
+
+            viewButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const status = button.getAttribute('data-status');
+                    const dataToShow = placeholderData[status];
+
+                    if (dataToShow && detailsDisplay) {
+                        detailsStatusTitle.textContent = status;
+                        detailsEmployeeId.textContent = dataToShow.employeeId;
+                        detailsEmployeeName.textContent = dataToShow.employeeName;
+                        detailsStartDate.textContent = dataToShow.startDate;
+                        detailsEndDate.textContent = dataToShow.endDate;
+                        detailsComments.textContent = dataToShow.comments || 'N/A';
+                        detailsReportingManager.textContent = dataToShow.reportingManager;
+                        detailsDisplay.style.display = 'block';
+                    } else if (detailsDisplay) {
+                        detailsDisplay.style.display = 'none';
+                        console.warn(`No placeholder data found for status: ${status}`);
+                    }
+                });
+            });
+
+            // Added Placeholder for Sidebar Button Clicks Back
+             const sidebarButtons = document.querySelectorAll('.sidebar-button');
+             sidebarButtons.forEach(button => {
+                 button.addEventListener('click', function(event) {
+                     const buttonText = event.target.textContent;
+                     // Example: Redirect or load content based on button clicked
+                     if (buttonText === 'Calendar') {
+                          // Potentially redirect to calendar.html
+                         // window.location.href = 'calendar.html';
+                          alert('Calendar clicked! (Implement navigation)');
+                     } else if (buttonText === 'View Holidays') {
+                          // Potentially redirect to viewholidays.html
+                         // window.location.href = 'viewholidays.html';
+                          alert('View Holidays clicked! (Implement navigation)');
+                     }
+                     else { // Assuming 'View Leaves' might link back to leaves.html or this page
+                          // window.location.href = 'leaves.html';
+                          alert(`${buttonText} clicked! (Implement navigation)`);
+                     }
+                 });
+             });
+
+        });
+    </script>
+
+</body>
+</html>
