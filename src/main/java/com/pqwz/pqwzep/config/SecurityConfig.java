@@ -18,10 +18,18 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> {})  // ✅ Enable CORS without using .and()
+                .cors(cors -> {})  // ✅ Enable CORS
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers(
+                                "/api/auth/**",
+                                "/api/openings/**",
+                                "/api/leaves/balances/**",
+                                "/api/leaves/apply",
+                                "/api/leaves/history/**",
+                                "/api/employees/**"             // ✅ Add this line to allow manager fetch
+                        ).permitAll()
+
+
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form.disable());
@@ -29,11 +37,10 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // ✅ CORS config for frontend requests
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOriginPatterns(List.of("*")); // or whitelist "http://127.0.0.1:5500"
+        config.setAllowedOriginPatterns(List.of("*"));  // Or use ["http://127.0.0.1:5500"] for stricter security
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
@@ -43,4 +50,3 @@ public class SecurityConfig {
         return source;
     }
 }
-

@@ -45,7 +45,7 @@ public class LoginController {
         }
     }
 
-    // ✅ GET: Fetch All Employees (for admin/debug use)
+    // GET: Fetch All Employees (for admin/debug use)
     @GetMapping("/login")
     public ResponseEntity<List<Employee>> getAllEmployees() {
         List<Employee> employees = employeeRepository.findAll();
