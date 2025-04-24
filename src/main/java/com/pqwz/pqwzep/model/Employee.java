@@ -3,6 +3,10 @@ package com.pqwz.pqwzep.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
 @Entity
 @Table(name = "employees")
 @Data
