@@ -1,0 +1,107 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiCalculator.CalculatorPage"
+             Title="Calculator">
+    <VerticalStackLayout Spacing="25" Padding="30">
+        <Entry x:Name="firstNumberEntry" Placeholder="Enter First Number" Keyboard="Numeric"/>
+        <Entry x:Name="secondNumberEntry" Placeholder="Enter Second Number" Keyboard="Numeric"/>
+        <Label x:Name="resultLabel" Text="Result will be shown here" HorizontalOptions="Center"/>
+        <Button Text="Add" Clicked="OnAddClicked"/>
+        <Button Text="Subtract" Clicked="OnSubtractClicked"/>
+        <Button Text="Multiply" Clicked="OnMultiplyClicked"/>
+        <Button Text="Divide" Clicked="OnDivideClicked"/>
+        <Button Text="Clear" Clicked="OnClearClicked"/>
+    </VerticalStackLayout>
+</ContentPage>
+
+
+using Microsoft.Maui.Controls;
+using System;
+
+namespace MauiCalculator
+{
+    public partial class CalculatorPage : ContentPage
+    {
+        public CalculatorPage()
+        {
+            InitializeComponent();
+        }
+
+        private void OnAddClicked(object sender, EventArgs e)
+        {
+            if (TryGetNumbers(out double num1, out double num2))
+            {
+                resultLabel.Text = $"Result: {num1 + num2}";
+            }
+        }
+
+        private void OnSubtractClicked(object sender, EventArgs e)
+        {
+            if (TryGetNumbers(out double num1, out double num2))
+            {
+                resultLabel.Text = $"Result: {num1 - num2}";
+            }
+        }
+
+        private void OnMultiplyClicked(object sender, EventArgs e)
+        {
+            if (TryGetNumbers(out double num1, out double num2))
+            {
+                resultLabel.Text = $"Result: {num1 * num2}";
+            }
+        }
+
+        private void OnDivideClicked(object sender, EventArgs e)
+        {
+            if (TryGetNumbers(out double num1, out double num2))
+            {
+                if (num2 == 0)
+                {
+                    resultLabel.Text = "Cannot divide by zero.";
+                }
+                else
+                {
+                    resultLabel.Text = $"Result: {num1 / num2}";
+                }
+            }
+        }
+
+        private void OnClearClicked(object sender, EventArgs e)
+        {
+            firstNumberEntry.Text = string.Empty;
+            secondNumberEntry.Text = string.Empty;
+            resultLabel.Text = "Result will be shown here";
+        }
+
+        private bool TryGetNumbers(out double num1, out double num2)
+        {
+            bool isNum1Valid = double.TryParse(firstNumberEntry.Text, out num1);
+            bool isNum2Valid = double.TryParse(secondNumberEntry.Text, out num2);
+
+            if (!isNum1Valid || !isNum2Valid)
+            {
+                resultLabel.Text = "Please enter valid numbers.";
+                return false;
+            }
+            return true;
+        }
+    }
+}
+
+
+<Shell
+    x:Class="MauiCalculator.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:MauiCalculator"
+    Shell.FlyoutBehavior="Flyout"
+    Title="MauiCalculator">
+
+    <!-- ShellContent for MainPage -->
+    
+
+    <!-- ShellContent for CalculatorPage -->
+    <FlyoutItem Title="Calculator">
+        <ShellContent ContentTemplate="{DataTemplate local:CalculatorPage}" Route="calculator" />
+    </FlyoutItem>
+</Shell>

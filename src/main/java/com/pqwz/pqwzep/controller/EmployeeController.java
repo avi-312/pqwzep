@@ -21,4 +21,10 @@ public class EmployeeController {
                 .map(employee -> ResponseEntity.ok(Map.of("name", employee.getManagerName())))
                 .orElse(ResponseEntity.notFound().build());
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
+        return employeeRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 }
