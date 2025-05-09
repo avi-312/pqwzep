@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Refer a Candidate</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f8ff;
+      padding: 2rem 0px 0px 0px;
+      color: #333;
+    }
+    .main-content {
+      padding: 20px 0px 0px 0px;
+    }
+
+    .header {
+      background-color: #5977da;
+      color: #fff;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .home{
+  font-size: 1.5rem;
+      font-weight: bold;
+      text-decoration: none;
+      background-color: #5977da;
+      color: #fff;
+      margin-right: 80%;
+      display: inline-block;
+
+}
+
+    .hero {
+      background-image: url('./images/bg-img.jpg');
+      background-size: cover;
+      background-position: center;
+      color: #362f2f;
+      text-align: center;
+      padding: 100px 0px;
+      position: relative;
+      border-radius: 0 0 50px 0;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+    .hero-content h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    h2 {
+      color: #f3f6f8;
+      margin-top: 20px;
+      padding-top: 60px;
+      text-align: center;
+    }
+    form {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 10px;
+      max-width: 1300px;
+      margin: auto;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+    input, textarea {
+      background-color: transparent;
+      width: 100%;
+      font-size: 18px;
+    padding: 10px;
+      margin-bottom: 1rem;
+      border-radius: 5px;
+      border: 1px solid transparent;
+    }
+    #candidateName{
+
+      border: 1px solid transparent;
+    }
+    input[readonly] {
+      background-color: rgba(0, 0, 0, 0.08);
+    }
+    .submit-btn {
+      background-color: #0077b6;
+      color: white;
+      padding: 0.8rem 1.5rem;
+      font-size: 15px;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .submit-btn:hover {
+      background-color: #023e8a;
+    }
+    .message {
+      text-align: center;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    .error {
+      color: red;
+    }
+    .success {
+      color: green;
+    }
+    .referred-candidates-container {
+  margin: 40px auto;
+  width: 90%;
+  max-width: 500px;
+  background-color: #f7f9fc;
+  padding: 20px 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.referred-candidates-container h3 {
+  text-align: center;
+  color: #007bff;
+  margin-bottom: 20px;
+}
+
+.referred-candidates-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.referred-candidates-table th,
+.referred-candidates-table td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.referred-candidates-table th {
+  background-color: #007bff;
+  color: white;
+}
+
+
+  </style>
+</head>
+<body>
+  <div class="main-content">
+    <div class="header">
+      <div class="logo">BLUE REVIVE</div>
+      <div class="home">Home</div>
+    </div>
+    <div class="hero">
+      <div class="hero-content">
+        <p>Join our Team</p>
+        <h1>Blue Revive</h1>
+        <h2>Refer A Candidates</h2>
+      </div>
+    
+
+  <form id="referralForm">
+    <label for="employeeId">Your Employee ID</label>
+    <input type="text" id="employeeId" name="employeeId" value="EMP1234" readonly />
+
+    <label for="jobId">Job ID</label>
+    <input type="text" id="jobId" name="jobId" readonly />
+
+    <label for="jobTitle">Job Title</label>
+    <input type="text" id="jobTitle" name="jobTitle" readonly />
+
+    <label for="candidateName">Candidate Name *</label>
+    <input type="text" id="candidateName" name="candidateName" required />
+
+    <label for="resume">Upload Resume *</label>
+    <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required />
+
+    <label for="comments">Additional Comments</label>
+    <textarea id="comments" name="comments" rows="3"></textarea>
+
+    <button type="submit" class="submit-btn">Submit</button>
+    <div class="message" id="formMessage"></div>
+  </form>
+    </div>
+
+  <script>
+    // Autofill job details from URL
+    const params = new URLSearchParams(window.location.search);
+    document.getElementById('jobId').value = params.get('jobId') || '';
+    document.getElementById('jobTitle').value = params.get('jobTitle') || '';
+
+    const form = document.getElementById('referralForm');
+    const messageDiv = document.getElementById('formMessage');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById('candidateName').value.trim();
+      const resume = document.getElementById('resume').files[0];
+
+      if (!name || !resume) {
+        messageDiv.textContent = "Please fill in all required fields.";
+        messageDiv.className = "message error";
+        return;
+      }
+      const allowedTypes = ['application/pdf'];
+    if (!allowedTypes.includes(resume.type)) {
+      messageDiv.textContent = "Invalid resume format. Please upload PDF file.";
+      messageDiv.className = "message error";
+      return;
+    }
+
+    // Validate file size (e.g., 2MB max)
+    const maxSize = 2 * 1024 * 1024; 
+    if (resume.size > maxSize) {
+      messageDiv.textContent = "File size exceeds 2MB. Please upload a smaller file.";
+      messageDiv.className = "message error";
+      return;
+    }
+
+      // Mock API submission
+      const formData = new FormData(form);
+      // Simulate sending data to backend
+      setTimeout(() => {
+        const success = Math.random() > 0.2; // 80% chance of success
+        if (success) {
+          messageDiv.textContent = "Referral Submitted Successfully!";
+          messageDiv.className = "message success";
+          form.reset();
+        } else {
+          messageDiv.textContent = "Error Submitting Referral. Please try again.";
+          messageDiv.className = "message error";
+        }
+      }, 1000);
+    });
+  </script>
+</body>
+</html>

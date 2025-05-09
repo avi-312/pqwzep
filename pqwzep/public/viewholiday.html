@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Holidays - PQWZ Portal</title>
+    <style>
+        /* Basic Reset & Body */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+
+            /* Background Image Settings */
+            background-image: url('bluerevive.jpg'); /* Path to your image */
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            background-color: #f8f9fa; /* Fallback color */
+        }
+
+        /* Header - UPDATED to Dark Navy Blue */
+        .app-header {
+            background-color: #003f7f; /* Dark Navy Blue */
+            padding: 15px 30px;
+            flex-shrink: 0;
+        }
+
+        .app-header .logo {
+            color: #ffffff;
+            font-size: 1.8em;
+            font-weight: bold;
+            text-decoration: none; /* Link to main leaves page */
+        }
+
+        .app-header .logo:hover {
+            color: #cce5ff;
+        }
+
+        /* Page Body Layout */
+        .page-body {
+            display: flex;
+            flex-grow: 1;
+        }
+
+        /* Sidebar - Dark Navy Blue */
+        .sidebar {
+            width: 260px;
+            background-color: #003f7f; /* Dark Navy Blue */
+            padding: 25px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+            color: #ffffff;
+        }
+
+        .profile-pic-container {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden; /* Keep this to clip the SVG to the circle */
+            margin-bottom: 15px;
+            border: 3px solid #ffffff;
+            flex-shrink: 0;
+            /* background-color: #e9ecef; */ /* Removed background */
+            display: flex; /* Added to help center SVG */
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Style for the embedded SVG */
+        .profile-pic-container svg {
+            width: 70%; /* Adjust size of icon within the circle */
+            height: 70%;
+            display: block; /* Remove extra space below SVG */
+        }
+
+
+        .employee-details {
+            text-align: center;
+            margin-bottom: 25px;
+            word-wrap: break-word;
+        }
+
+        .employee-details p {
+            margin-bottom: 5px;
+            font-size: 1.0em; /* Increased size */
+            color: #e9ecef;
+        }
+
+        .employee-details #employee-id,
+        .employee-details #employee-email {
+            font-weight: bold;
+        }
+
+        .employee-details #employee-name {
+            font-weight: bold;
+            font-size: 1.2em; /* Increased size */
+            color: #ffffff;
+        }
+
+        /* Sidebar Nav Styles */
+        .sidebar-nav {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* This gap creates space between buttons */
+            margin-top: 15px; /* Add space above the buttons */
+        }
+
+        /* Sidebar Button Style */
+        .sidebar-button {
+            display: block;
+            width: 100%;
+            padding: 12px 15px;
+            background-color: #ffffff; /* White background */
+            color: #0056b3; /* Dark blue text */
+            border: 1px solid #dee2e6; /* Subtle border */
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 1em;
+            font-weight: 500; /* Slightly bolder text */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Sidebar Button Hover Style */
+        .sidebar-button:hover {
+            background-color: #e9ecef; /* Light grey background on hover */
+            color: #003f7f; /* Darker blue text on hover */
+        }
+
+
+        /* Main Content Area */
+        .main-content {
+            flex-grow: 1;
+            padding: 30px;
+            overflow-y: auto;
+            /* Background ensures readability over body image */
+            background-color: rgba(255, 255, 255, 0.92); /* Slightly less transparent white */
+            border-radius: 8px;
+            margin: 20px;
+        }
+
+        .main-content h2 {
+            text-align: center;
+            color: #003f7f; /* Dark blue heading */
+            margin-bottom: 25px;
+        }
+
+        /* Holidays Table Styling */
+        .holidays-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto; /* Center table if max-width is set */
+            max-width: 800px; /* Optional: Limit table width */
+            font-size: 0.95em;
+        }
+
+        .holidays-table th,
+        .holidays-table td {
+            border: 1px solid #dee2e6; /* Light grey border */
+            padding: 10px 12px;
+            text-align: left;
+        }
+
+        .holidays-table th {
+            background-color: #e9ecef; /* Light grey header */
+            color: #495057;
+            font-weight: bold;
+        }
+
+        /* Specific column styling */
+        .holidays-table th:nth-child(1), /* S.No Header */
+        .holidays-table td:nth-child(1) {  /* S.No Data */
+            text-align: center;
+            width: 60px; /* Fixed width for S.No */
+        }
+
+         .holidays-table th:nth-child(3), /* Status Header */
+         .holidays-table td:nth-child(3) {  /* Status Data */
+            text-align: center;
+            width: 120px; /* Fixed width for Status */
+         }
+
+        .holidays-table tbody tr:nth-child(even) {
+            background-color: #f8f9fa; /* Subtle striping */
+        }
+
+        .holidays-table tbody tr:hover {
+            background-color: #e2e6ea; /* Hover effect */
+        }
+
+
+         /* Responsive adjustments */
+         @media (max-width: 768px) {
+             .page-body {
+                 flex-direction: column;
+             }
+             .sidebar {
+                 width: 100%;
+                 height: auto;
+                 padding: 15px;
+             }
+             /* Added Responsive Sidebar Nav Styles Back */
+             .sidebar-nav {
+                 flex-direction: row; /* Buttons side-by-side */
+                 justify-content: center;
+                 flex-wrap: wrap;
+                 gap: 8px;
+                 margin-top: 15px; /* Ensure space after details */
+                 margin-bottom: 0; /* Remove bottom margin if stacked */
+             }
+             .sidebar-button {
+                 width: auto; /* Buttons take natural width */
+                 padding: 8px 12px;
+             }
+             /* End Added Responsive Sidebar Nav Styles */
+             .main-content {
+                 margin: 10px;
+                 padding: 15px;
+             }
+             .holidays-table {
+                 font-size: 0.9em;
+                 max-width: 100%;
+             }
+             .holidays-table th:nth-child(1),
+             .holidays-table td:nth-child(1) { width: 45px; } /* Adjust width */
+             .holidays-table th:nth-child(3),
+             .holidays-table td:nth-child(3) { width: 100px; } /* Adjust width */
+             .holidays-table th,
+             .holidays-table td { padding: 8px; }
+         }
+    </style>
+</head>
+<body>
+
+    <header class="app-header">
+        <a href="leaves.html" class="logo">PQWZ</a>
+    </header>
+
+    <div class="page-body">
+        <aside class="sidebar">
+            <div class="profile-pic-container">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#dee2e6">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+            </div>
+            <div class="employee-details">
+                <p id="employee-name">Employee Name</p>
+                <p id="employee-id">ID: 123456</p>
+                <p id="employee-email">employee.email@pqwz.com</p>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="sidebar-button">View Leaves</button>
+                <button class="sidebar-button">Calendar</button>
+                <button class="sidebar-button">View Holidays</button>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <h2>Company Holidays</h2>
+            <table class="holidays-table">
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>Name</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr> <td>1</td> <td>New Year's Day</td> <td>Holiday</td> </tr>
+                    <tr> <td>2</td> <td>Republic Day</td> <td>Holiday</td> </tr>
+                    <tr> <td>3</td> <td>Holi</td> <td>Holiday</td> </tr>
+                    <tr> <td>4</td> <td>Good Friday</td> <td>Holiday</td> </tr>
+                    <tr> <td>5</td> <td>Eid al-Fitr</td> <td>Holiday</td> </tr>
+                    <tr> <td>6</td> <td>Labour Day / May Day</td> <td>Holiday</td> </tr>
+                    <tr> <td>7</td> <td>Eid al-Adha</td> <td>Holiday</td> </tr>
+                    <tr> <td>8</td> <td>Independence Day</td> <td>Holiday</td> </tr>
+                    <tr> <td>9</td> <td>Raksha Bandhan</td> <td>Holiday</td> </tr>
+                    <tr> <td>10</td> <td>Janmashtami</td> <td>Holiday</td> </tr>
+                    <tr> <td>11</td> <td>Gandhi Jayanti</td> <td>Holiday</td> </tr>
+                    <tr> <td>12</td> <td>Dussehra (Vijayadashami)</td> <td>Holiday</td> </tr>
+                    <tr> <td>13</td> <td>Diwali (Deepavali)</td> <td>Holiday</td> </tr>
+                    <tr> <td>14</td> <td>Guru Nanak Jayanti</td> <td>Holiday</td> </tr>
+                    <tr> <td>15</td> <td>Christmas Day</td> <td>Holiday</td> </tr>
+                    </tbody>
+            </table>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Added Placeholder for Sidebar Button Clicks Back
+             const sidebarButtons = document.querySelectorAll('.sidebar-button');
+             sidebarButtons.forEach(button => {
+                 button.addEventListener('click', function(event) {
+                     const buttonText = event.target.textContent;
+                     // Example: Redirect or load content based on button clicked
+                     if (buttonText === 'View Leaves') {
+                         // Potentially redirect to leaves.html
+                         // window.location.href = 'leaves.html';
+                         alert('View Leaves clicked! (Implement navigation)');
+                     } else if (buttonText === 'Calendar') {
+                          // Potentially redirect to calendar.html
+                         // window.location.href = 'calendar.html';
+                          alert('Calendar clicked! (Implement navigation)');
+                     } else {
+                          alert(`${buttonText} clicked! (Implement functionality)`);
+                     }
+                 });
+             });
+        });
+    </script>
+
+</body>
+</html>

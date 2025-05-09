@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Portal Login</title>
+    <style>
+        /* Basic Reset and Body Styling */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { height: 100%; }
+        body {
+            display: flex; flex-direction: column; min-height: 100vh;
+            font-family: Arial, sans-serif; margin: 0;
+            /* Ensure image path is correct */
+            background-image: url('bluerevback.jpeg');
+            /* Use cover: Fills space, may crop square image to fit screen */
+            background-size: cover;
+            background-position: center center; background-repeat: no-repeat;
+            background-attachment: fixed; background-color: #f0f0f0;
+            overflow-y: auto; /* Body scrolls if needed */
+        }
+        /* Header Styling */
+        .header {
+            background-color: #003366; color: white; text-align: left;
+            padding: 10px 20px; width: 100%; font-size: 1.2em;
+            font-weight: normal; box-sizing: border-box; position: fixed;
+            top: 0; left: 0; z-index: 1000; flex-shrink: 0;
+        }
+        /* Logo */
+        .content-one {
+            flex-grow: 1; display: flex; flex-direction: column;
+            justify-content: center; /* Vertically center */
+            align-items: center; /* Horizontally center */
+            width: 100%; padding-top: 120px; /* Space for fixed header */
+            padding-bottom: 0px; padding-left: 15px; padding-right: 15px;
+            text-align: center; box-sizing: border-box;
+        }
+        /* Centering Container for Login Elements */
+        .content-wrapper {
+            flex-grow: 1; display: flex; flex-direction: column;
+            justify-content: center; /* Vertically center */
+            align-items: center; /* Horizontally center */
+            width: 100%; padding-top: 0px; /* Space for fixed header */
+            padding-bottom: 20px; padding-left: 15px; padding-right: 15px;
+            text-align: center; box-sizing: border-box;
+        }
+        /* Logo Icon Styling */
+        .login-icon {
+             /* Ensure image path is correct */
+            width: 100px; height: auto; margin-bottom: 30px; flex-shrink: 0;
+        }
+        /* Container for form elements */
+        .login-form-elements {
+            width: 100%; max-width: 320px; margin: 0 auto; flex-shrink: 0;
+        }
+        /* Input Field Styling */
+        .form-input {
+            width: 100%; padding: 12px; margin-bottom: 20px;
+            border: 1px solid #ccc; border-radius: 4px; font-size: 1em;
+            box-sizing: border-box; text-align: left;
+        }
+        .form-input::placeholder { color: #555; opacity: 1; }
+        /* Button Styling */
+        .form-button {
+            width: 100%; padding: 12px; background-color: #007bff;
+            color: white; border: none; border-radius: 4px; cursor: pointer;
+            font-size: 1.1em; margin-top: 5px; transition: background-color 0.3s ease;
+        }
+        .form-button:hover { background-color: #0056b3; }
+        /* Error Message Styling */
+        .error-message {
+            color: #D8000C; background-color: rgba(255, 210, 210, 0.9);
+            border: 1px solid #D8000C; padding: 10px; margin-top: 15px;
+            border-radius: 4px; font-size: 0.9em; text-align: center;
+            width: 100%; max-width: 320px; display: none;
+            margin-left: auto; margin-right: auto; flex-shrink: 0;
+        }
+        /* Add this within your <style> block */
+
+            .password-wrapper {
+            position: relative; /* Container for positioning the icon */
+            width: 100%; /* Ensure it takes full width like other inputs */
+            margin-bottom: 20px; /* Keep the spacing below the field */
+        }
+
+        /* Adjust password input padding to make space for the icon */
+        .password-wrapper .form-input {
+            padding-right: 40px; /* Add space on the right */
+            /* Remove margin-bottom from input, use wrapper's margin */
+            margin-bottom: 0;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px; /* Position icon 10px from the right */
+            top: 50%; /* Center vertically */
+            transform: translateY(-50%);
+            cursor: pointer;
+            user-select: none; /* Prevent text selection on icon */
+            font-size: 1.2em; /* Adjust icon size if needed */
+            color: #555; /* Icon color */
+        }
+         /* Responsive adjustments */
+         @media (max-width: 480px) {
+            .login-form-elements { max-width: 90%; }
+            .header { padding: 8px 15px; }
+            .content-wrapper { padding-top: 45px; }
+            .login-icon { width: 80px; margin-bottom: 20px; }
+            .form-input { margin-bottom: 15px; }
+        }
+        /* Optional: Rule to test scrolling */
+        /* .content-wrapper::after { content: ''; display: block; height: 800px; } */
+    </style>
+</head>
+<body>
+    <div class="header">EMPLOYEE PORTAL</div>
+    <div class="content-one">
+    <img src="iconbluerev.png" alt="Company Logo" class="login-icon">
+    </div>
+    <div class="content-wrapper">
+        <div class="login-form-elements">
+            <form id="loginFormInternal" onsubmit="return false;">
+                <input type="text" id="employeeId" class="form-input" placeholder="ID" required>
+                <div class="password-wrapper">
+                    <input type="password" id="password" class="form-input" placeholder="PASSWORD" required>
+                    <span class="toggle-password" id="togglePassword">👁️</span>
+                     </div>
+                <button id="submitBtn" class="form-button">LOGIN</button>
+            </form>
+            <p class="error-message" id="errorMessage"></p>
+        </div>
+    </div>
+    <script>
+        // JavaScript (validation, fetch) remains the same
+        document.addEventListener('DOMContentLoaded',function(){const s=document.getElementById("submitBtn"),e=document.getElementById("employeeId"),t=document.getElementById("password"),o=document.getElementById("errorMessage");s.addEventListener("click",function(){const n=e.value.trim(),i=t.value.trim();if(o.textContent="",o.style.display="none",!n)return o.textContent="ID is required.",o.style.display="block",e.focus(),void 0;if(!i)return o.textContent="PASSWORD is required.",o.style.display="block",t.focus(),void 0;const d="http://localhost:8080/api/auth/login",l=document.getElementById("submitBtn");l.disabled=!0,l.textContent="LOGGING IN...",fetch(d,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:n,password:i})}).then(async s=>{if(!s.ok){let e=`Error: ${s.statusText}`;try{e=(await s.json()).message||e}catch(s){}throw new Error(e)}return s.json()}).then(s=>{console.log("Login successful",s),window.location.href="/dashboard"}).catch(s=>{o.textContent=s.message,o.style.display="block",console.error("Login error:",s)}).finally(()=>{l.disabled=!1,l.textContent="LOGIN"})}),t.addEventListener("keypress",function(e){"Enter"===e.key&&(e.preventDefault(),s.click())})});
+        // Add this code INSIDE the existing
+        // document.addEventListener('DOMContentLoaded', function() { ... });
+
+        const passwordInput = document.getElementById('password');
+        const togglePasswordButton = document.getElementById('togglePassword');
+
+        if (passwordInput && togglePasswordButton) {
+            togglePasswordButton.addEventListener('click', function () {
+                // Toggle the type attribute
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+
+                // Toggle the icon (optional: change icon based on state)
+                // For simplicity, we're using the same icon here,
+                // but you could change the text content or class for different icons
+                // Example: this.textContent = type === 'password' ? '👁️' : '🙈';
+                 // Or using classes with background images / icon fonts
+                 // this.classList.toggle('icon-eye');
+                 // this.classList.toggle('icon-eye-slash');
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PQWZ Leave Portal</title>
+    <style>
+        /* Basic Reset & Body */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+
+            /* Background Image Settings */
+            background-image: url('bluerevive.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            background-color: #f8f9fa; /* Fallback color */
+        }
+
+        /* Header - Dark Navy Blue */
+        .app-header {
+            background-color: #003f7f; /* Dark Navy Blue */
+            padding: 15px 30px;
+        }
+
+        .app-header .logo {
+            color: #ffffff;
+            font-size: 1.8em;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .app-header .logo:hover {
+            color: #cce5ff;
+        }
+
+        /* Page Body Layout */
+        .page-body {
+            display: flex;
+            flex-grow: 1;
+            background-color: rgba(255, 255, 255, 0.1); /* Optional: Subtle overlay */
+        }
+
+        /* Sidebar - Dark Navy Blue */
+        .sidebar {
+            width: 260px;
+            background-color: #003f7f; /* Dark Navy Blue */
+            padding: 25px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+            color: #ffffff;
+        }
+
+        .profile-pic-container {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden; /* Keep this to clip the SVG to the circle */
+            margin-bottom: 15px;
+            border: 3px solid #ffffff;
+            flex-shrink: 0;
+            /* background-color: #e9ecef; */ /* Removed background */
+            display: flex; /* Added to help center SVG if needed */
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Style for the embedded SVG */
+        .profile-pic-container svg {
+            width: 70%; /* Adjust size of icon within the circle */
+            height: 70%;
+            display: block; /* Remove extra space below SVG */
+        }
+
+
+        .employee-details {
+            text-align: center;
+            margin-bottom: 25px;
+            word-wrap: break-word;
+        }
+
+        .employee-details p {
+            margin-bottom: 5px;
+            font-size: 0.95em; /* Keeping previous size */
+            color: #e9ecef;
+        }
+
+        .employee-details #employee-id,
+        .employee-details #employee-email {
+            font-weight: bold;
+        }
+
+        .employee-details #employee-name {
+            font-weight: bold;
+            font-size: 1.1em; /* Keeping previous size */
+            color: #ffffff;
+        }
+
+        .sidebar-nav {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* This gap creates space between buttons */
+            margin-top: 15px; /* Add space above buttons */
+        }
+
+        /* Sidebar Button Style */
+        .sidebar-button {
+            display: block;
+            width: 100%;
+            padding: 12px 15px;
+            background-color: #ffffff; /* White background */
+            color: #0056b3; /* Dark blue text */
+            border: 1px solid #dee2e6; /* Subtle border */
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 1em;
+            font-weight: 500; /* Slightly bolder text */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Sidebar Button Hover Style */
+        .sidebar-button:hover {
+            background-color: #e9ecef; /* Light grey background on hover */
+            color: #003f7f; /* Darker blue text on hover */
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex-grow: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .leave-boxes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        /* Leave Box - White Background */
+        .leave-box {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 180px;
+            color: #003f7f;
+        }
+
+        .leave-box h3 {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #003f7f;
+        }
+
+        .leave-box .remaining-info {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #003f7f;
+        }
+
+        .leave-box .remaining-days {
+            font-weight: bold;
+            font-size: 1.4em;
+            color: #0056b3;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* Apply Button - Blue Background */
+        .apply-button {
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s ease;
+            align-self: center;
+            width: fit-content;
+        }
+
+        .apply-button:hover {
+            background-color: #0056b3;
+        }
+
+         /* Responsive adjustments */
+         @media (max-width: 992px) {
+             .leave-boxes-grid {
+                 grid-template-columns: repeat(2, 1fr);
+             }
+             .sidebar {
+                 width: 220px;
+             }
+         }
+
+         @media (max-width: 768px) {
+             .page-body {
+                 flex-direction: column;
+             }
+             .sidebar {
+                 width: 100%;
+                 height: auto;
+                 padding: 15px;
+             }
+             .profile-pic-container {
+                 width: 80px;
+                 height: 80px;
+                 margin-bottom: 10px;
+             }
+              .sidebar-nav {
+                 flex-direction: row;
+                 justify-content: center;
+                 flex-wrap: wrap;
+                 gap: 8px;
+                 margin-top: 15px; /* Ensure space after details */
+                 margin-bottom: 0; /* Remove bottom margin if stacked */
+             }
+             .sidebar-button {
+                 width: auto;
+                 padding: 8px 12px;
+             }
+             .main-content {
+                 padding: 20px;
+             }
+             .leave-boxes-grid {
+                grid-template-columns: repeat(1, 1fr);
+                 gap: 15px;
+             }
+             .leave-box {
+                 min-height: 160px;
+             }
+         }
+
+    </style>
+</head>
+<body>
+
+    <header class="app-header">
+        <a href="#" class="logo">PQWZ</a>
+    </header>
+
+    <div class="page-body">
+        <aside class="sidebar">
+            <div class="profile-pic-container">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#dee2e6">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                  {/* */}
+                  {/* */}
+                </svg>
+            </div>
+            <div class="employee-details">
+                <p id="employee-name">Employee Name</p>
+                <p id="employee-id">ID: 123456</p>
+                <p id="employee-email">employee.email@pqwz.com</p>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="sidebar-button">View Leaves</button>
+                <button class="sidebar-button">Calendar</button>
+                <button class="sidebar-button">View Holidays</button>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="leave-boxes-grid">
+                <div class="leave-box" id="casual-leave-box">
+                    <h3>Casual Leaves</h3>
+                    <p class="remaining-info">
+                        <span class="remaining-days">10 / 12</span> Days Available
+                    </p>
+                    <button class="apply-button">Apply Leave</button>
+                </div>
+
+                <div class="leave-box" id="sick-leave-box">
+                    <h3>Sick Leaves</h3>
+                    <p class="remaining-info">
+                         <span class="remaining-days">8 / 10</span> Days Available
+                    </p>
+                    <button class="apply-button">Apply Leave</button>
+                </div>
+
+                <div class="leave-box" id="personal-leave-box">
+                    <h3>Personal Leave</h3>
+                     <p class="remaining-info">
+                        <span class="remaining-days">5 / 5</span> Days Available
+                     </p>
+                    <button class="apply-button">Apply Leave</button>
+                </div>
+
+                <div class="leave-box" id="bereavement-leave-box">
+                    <h3>Bereavement Leave</h3>
+                    <p class="remaining-info">
+                        <span class="remaining-days">3 / 3</span> Days Available
+                    </p>
+                    <button class="apply-button">Apply Leave</button>
+                </div>
+
+                <div class="leave-box" id="unpaid-leave-box">
+                    <h3>Unpaid Leave</h3>
+                    <p class="remaining-info">
+                         <span class="remaining-days">N/A</span> Available
+                    </p>
+                    <button class="apply-button">Apply Leave</button>
+                </div>
+
+                <div class="leave-box" id="maternity-paternity-leave-box">
+                    <h3>Maternity/Paternity Leave</h3>
+                    <p class="remaining-info">
+                        <span class="remaining-days">90 / 180</span> Days Available
+                    </p>
+                    <button class="apply-button">Apply Leave</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Placeholder listeners for sidebar buttons
+             const sidebarButtons = document.querySelectorAll('.sidebar-button');
+             sidebarButtons.forEach(button => {
+                 button.addEventListener('click', function(event) {
+                     const buttonText = event.target.textContent;
+                     // Example: Redirect or load content based on button clicked
+                      if (buttonText === 'Calendar') {
+                          // Potentially redirect to calendar.html
+                         // window.location.href = 'calendar.html';
+                          alert('Calendar clicked! (Implement navigation)');
+                     } else if (buttonText === 'View Holidays') {
+                          // Potentially redirect to viewholidays.html
+                         // window.location.href = 'viewholidays.html';
+                          alert('View Holidays clicked! (Implement navigation)');
+                     } else if (buttonText === 'View Leaves') {
+                          // Potentially redirect to viewleaves.html
+                         // window.location.href = 'viewleaves.html';
+                         alert('View Leaves clicked! (Implement navigation)');
+                     }
+                     else {
+                          alert(`${buttonText} clicked! (Implement functionality)`);
+                     }
+                 });
+             });
+        });
+    </script>
+
+</body>
+</html>
