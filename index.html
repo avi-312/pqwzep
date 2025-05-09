@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Job Openings</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 250px;
+      height: 100vh;
+      background-color: #5977da;
+      color: #fff;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 1000;
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar .centered-content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 120px;
+    }
+
+    .sidebar .employee-info {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 300px; /* Increased to accommodate photo and text with proper spacing */
+      width: 100%;
+    }
+
+    .sidebar .employee-info .employee-photo {
+      width: 150px;
+      height: 150px;
+      border: 2px solid #007bff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px; /* Added spacing between photo and text */
+      background-image: url('./images/profileicon.png');
+      background-size: 270px 200px; /* Ensures the icon fits within the circle */
+      background-repeat: no-repeat;
+      background-position: center;
+      background-color: #fff;
+    }
+
+    .sidebar .employee-info p {
+      margin: 5px 0;
+      font-size: 1rem; /* Consistent text size */
+    }
+
+    .sidebar .referrals-btn {
+      display: inline-block;
+      background-color: #f2f6f9;
+      color: rgb(62, 51, 211);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      font-weight: bold;
+      margin-top: 50px;
+      cursor: pointer;
+      border: 2px solid #f3f5f6;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .sidebar .referrals-btn:hover {
+      background-color: #58a8f8;
+      transform: translateY(-2px);
+    }
+
+    /* Hamburger Menu for Mobile */
+    .hamburger {
+      display: none;
+      font-size: 1.5rem;
+      color: #fff;
+      cursor: pointer;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-left: 250px;
+      padding: 20px;
+    }
+
+    .header {
+      background-color: #5977da; /* Match sidebar background color */
+      color: #fff; /* Match sidebar text color */
+      padding: 20px; /* Match sidebar padding */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed; /* Match sidebar's fixed positioning behavior */
+      top: 0;
+      left: 0px; /* Account for sidebar width */
+      right: 0; /* Span the remaining width */
+      z-index: 1000; /* Ensure it stays above other content */
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add subtle shadow for separation */
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+
+    }
+    .home {
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-decoration: none;
+  background-color: #5977da;
+  color: #fff;
+  padding: 8px 16px;
+  margin-right: 80%;
+  border: none;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.home:hover {
+  background-color: #f0f0f0;
+  color: #00376b;
+  border-color: #5977da;
+}
+
+    .nav-link{
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    .hero {
+      background-image: url('./images//bg-img.jpg');
+      background-size: cover;
+      background-position: center;
+      color: #fff;
+      text-align: center;
+      padding: 100px 20px;
+      position: relative;
+      border-radius: 0 0 50px 0;
+      overflow: hidden;
+      margin-top: 60px; /* Adjust to avoid overlap with fixed header */
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-content .search-bar {
+      margin-bottom: 30px;
+      position: relative;
+    }
+
+    .hero-content .search-bar input {
+      width: 300px;
+      padding: 10px;
+      border: 2px solid #0077b6;
+      border-radius: 5px;
+      font-size: 1rem;
+      background-color: transparent;
+      color: #fff;
+      outline: none;
+    }
+
+    .hero-content .search-bar input::placeholder {
+      color: #ccc;
+    }
+
+    .hero-content p {
+      font-size: 1.2rem;
+    }
+
+    .hero-content h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .job-details-section {
+      background-color: #fff;
+      padding: 30px;
+      margin: 20px auto;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      max-width: 800px;
+    }
+
+    .job-details-section.hidden {
+      display: none; /* Hide non-matching job sections */
+    }
+
+    .job-details-section h2 {
+      color: #333;
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 1.7rem;
+      font-weight: bold;
+    }
+
+    .job-info {
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .job-info strong {
+      font-weight: bold;
+      color: #555;
+    }
+
+    .job-info span {
+      color: #333;
+      margin-left: 10px;
+    }
+
+    .section-title {
+      margin-top: 20px;
+      font-weight: bold;
+      color: #333;
+      font-size: 1.1rem;
+    }
+
+    .role-overview,
+    .job-summary,
+    .key-responsibilities,
+    .requirements,
+    .why-work {
+      margin-top: 10px;
+    }
+
+    ul, ol {
+      padding-left: 20px;
+      margin-top: 10px;
+    }
+
+    ul li, ol li {
+      margin-bottom: 10px;
+    }
+
+    .button-container {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      padding-top: 1rem;
+      text-align: center;
+    }
+
+    .apply-btn {
+      display: inline-block;
+      background-color: #0077b6;
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1.5rem;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s ease;
+    }
+
+    .apply-btn:hover {
+      background-color: #023e8a;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.active {
+        transform: translateX(0);
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .nav-link {
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+
+
+      .hero {
+        padding: 80px 20px;
+      }
+
+      .hero-content h1 {
+        font-size: 2rem;
+      }
+
+      .hero-content p {
+        font-size: 1rem;
+      }
+
+      .job-info strong {
+        width: 100px;
+      }
+
+      .job-info {
+        flex-direction: column;
+        text-align: left;
+      }
+
+      .job-info strong {
+        margin-right: 0;
+        margin-bottom: 5px;
+      }
+
+      .hero-content .search-bar input {
+        width: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="centered-content">
+      <div class="employee-info">
+        <div class="employee-photo"></div>
+        <p>ID: EMP10234</p>
+        <p>Name: Priya Sharma</p>
+        <p>Email: priya.sharma@bluerevive.in</p>
+      </div>
+      <a href="Referrals.html" class="referrals-btn">My Referrals</a>
+    </div>
+  </div>
+
+  <!-- Hamburger Menu -->
+  <div class="hamburger" id="hamburger">☰</div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="header">
+      <div class="logo">BLUE REVIVE</div>
+      <a href="home.htlm" class="home">Home</a>
+      
+    </div>
+
+    <div class="hero">
+      <div class="hero-content">
+        <div class="search-bar">
+          <input type="text" id="searchInput" placeholder="Search jobs...">
+        </div>
+        <p>Join our Team</p>
+        <h1>Blue Revive</h1>
+      </div>
+    </div>
+
+    <!-- Job Details Section - Product Lifecycle Manager -->
+    <div class="job-details-section">
+      <h2>Job Details</h2>
+      <div class="job-info"><strong>Job Title:</strong> <span>Product Lifecycle Manager</span></div>
+      <div class="job-info"><strong>Job ID:</strong> <span>1021</span></div>
+      <div class="job-info"><strong>Location:</strong> <span>Gurugram, India (Relocation required)</span></div>
+      <div class="job-info"><strong>Experience:</strong> <span>5+ Years</span></div>
+      <div class="job-info"><strong>Employment Type:</strong> <span>Full-Time</span></div>
+      <div class="section-title">Role Overview:</div>
+      <div class="role-overview">
+        <p>We are seeking a highly organized and strategic Product Lifecycle Manager to oversee the end-to-end development of our smart water management products...</p>
+      </div>
+      <div class="section-title">Key Responsibilities:</div>
+      <div class="key-responsibilities">
+        <ul>
+            <li>Drive the full product lifecycle, ensuring smooth execution from ideation to launch.</li>
+            <li>Create and manage structured tickets to track progress across requirements gathering, development, testing, and deployment.</li>
+            <li>Assign, prioritize, and monitor tickets across cross-functional teams (development, design, QA, deployment).</li>
+            <li>Identify bottlenecks and proactively implement solutions to optimize efficiency.</li>
+            <li>Implement and refine Agile methodologies (Scrum, Kanban) using tools like Jira, Trello, or Azure DevOps.</li>
+            <li>Work closely with engineering, product, and operations teams to ensure alignment with business goals.</li>
+            <li>Ensure timely feature releases with high-quality standards.</li>
+            <li>Utilize data-driven insights to improve workflows and enhance product delivery.</li>
+
+        </ul>
+      </div>
+      <div class="section-title">Requirements:</div>
+      <div class="requirements">
+        <ul>
+            <li>5+ years of experience in product lifecycle management, project management, or a related field.</li>
+            <li>Strong expertise in ticketing systems (Jira, Trello, Azure DevOps, etc.).</li>
+            <li>Experience in Agile workflows (Scrum, Kanban) and sprint planning.</li>
+            <li>Hands-on proficiency in MySQL for managing and analyzing product-related data.</li>
+
+        </ul>
+      </div>
+      <div class="button-container"><a href="refer.html?jobId=1021&jobTitle=Product%20Lifecycle%20Manager" class="apply-btn">Refer Candidate</a></div>
+    </div>
+
+    <!-- Job Details Section - Database Engineer (Fresher) -->
+    <div class="job-details-section">
+      <h2>Job Details</h2>
+      <div class="job-info"><strong>Job Title:</strong> <span>Database Engineer (Fresher)</span></div>
+      <div class="job-info"><strong>Job ID:</strong> <span>1205</span></div>
+      <div class="job-info"><strong>Location:</strong> <span>Gurugram, India (Relocation required)</span></div>
+      <div class="job-info"><strong>Experience:</strong> <span>0-1 year</span></div>
+      <div class="job-info"><strong>Employment Type:</strong> <span>Full-Time</span></div>
+      <div class="job-info"><strong>Salary:</strong> <span>4.5 LPA</span></div>
+      <div class="section-title">Role Overview:</div>
+      <div class="role-overview">
+        <p>We are looking for a motivated Database Engineer (Fresher) to assist in designing and maintaining our database systems...</p>
+      </div>
+      <div class="section-title">Key Responsibilities:</div>
+      <div class="key-responsibilities">
+        <ul>
+            <li>Design, develop, and maintain relational databases (MySQL, PostgreSQL, SQL Server, etc.).</li>
+            <li>Write and optimize SQL queries, stored procedures, and triggers for data retrieval and manipulation.</li>
+            <li>Ensure seamless database integration with websites and web applications using backend technologies (PHP, Node.js, Python, etc.).</li>
+            <li>Develop and manage APIs for database interaction.</li>
+
+        </ul>
+      </div>
+      <div class="section-title">Requirements:</div>
+      <div class="requirements">
+        <ul>
+            <li>Bachelor's degree in Computer Science, IT, or a related field.</li>
+            <li>Strong knowledge of SQL and database management systems (MySQL, PostgreSQL, SQL Server, etc.).</li>
+            <li>Experience in connecting databases with websites using backend technologies (PHP, Node.js, Python, etc.).</li>
+            <li>Understanding of database normalization, indexing, and query optimization.</li>
+            <li>Familiarity with RESTful APIs and web services for database interaction.</li>
+            <li>Apropos on experience with at least one full-stack project involving database integration.</li>
+            <li>Basic knowledge of cloud databases (AWS RDS, Google Cloud SQL, or Azure SQL Database) is a plus.</li>
+            <li>Strong problem-solving skills and ability to work in a team environment.</li>
+
+        </ul>
+      </div>
+      <div class="button-container"><a href="refer.html?jobId=1205&jobTitle=Database%20Engineer%20(Fresher)" class="apply-btn">Refer Candidate</a></div>
+    </div>
+
+    <!-- Job Details Section - HR Professional -->
+    <div class="job-details-section">
+      <h2>Job Details</h2>
+      <div class="job-info"><strong>Job Title:</strong> <span>HR Professional</span></div>
+      <div class="job-info"><strong>Job ID:</strong> <span>1023</span></div>
+      <div class="job-info"><strong>Location:</strong> <span>Gurugram, India (Relocation required)</span></div>
+      <div class="section-title">Job Summary:</div>
+      <div class="job-summary">
+        <p>Responsible for managing recruitment, employee relations, and HR policies to support organizational growth...</p>
+      </div>
+      <div class="section-title">Key Responsibilities:</div>
+      <div class="key-responsibilities">
+        <ul>
+            <li>
+                <b>Recruitment & Onboarding:</b>
+                Manage end-to-end recruitment processes, from posting job openings to conducting interviews and onboarding new employees.
+            </li>
+            <li>
+                <b>Employee Engagement:</b>
+                Assist in creating a positive work environment by organizing employee engagement activities, feedback sessions, and recognition programs.
+            </li>
+            <li>
+                <b>Performance Management:</b>
+                Support the performance review process, help set goals, and assist in providing feedback for employee development.
+            </li>
+            <li>
+                <b>Policy & Compliance:</b>
+                Ensure that HR policies align with legal regulations and internal company standards.
+            </li>
+            <li>
+                <b>Employee Relations:</b>
+                Serve as a point of contact for employee concerns and assist in resolving conflicts or concerns in a timely manner.
+            </li>
+            <li>
+                <b>HR Administration:</b>
+                Maintain accurate employee records, track attendance, leaves, and other administrative tasks related to HR.
+            </li>
+
+        </ul>
+      </div>
+      <div class="section-title">Requirements:</div>
+      <div class="requirements">
+        <ul>
+            <li>2+ years of experience in HR management, recruitment, or a related field.</li>
+            <li>Strong communication and interpersonal skills.</li>
+            <li>Ability to handle sensitive information with discretion.</li>
+            <li>Proficient in MS Office and HR software tools (e.g., HRMS, SAP).</li>
+            <li>Understanding of labor laws and HR best practices.</li>
+            <li>A proactive attitude with the ability to work independently in a fast-paced environment.</li>
+
+        </ul>
+      </div>
+      <div class="button-container"><a href="refer.html?jobId=1023&jobTitle=HR%20Professional" class="apply-btn">Refer Candidate</a></div>
+    </div>
+  </div>
+
+  <!-- JavaScript for Hamburger Menu Toggle and Search Functionality -->
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const sidebar = document.getElementById('sidebar');
+    const searchInput = document.getElementById('searchInput');
+    const jobSections = document.querySelectorAll('.job-details-section');
+
+    // Toggle sidebar on hamburger click
+    hamburger.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+    });
+
+    // Search functionality
+    searchInput.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase().trim();
+
+      jobSections.forEach(section => {
+        const text = section.textContent.toLowerCase();
+        if (searchTerm === '' || text.includes(searchTerm)) {
+          section.classList.remove('hidden'); // Show section if empty or matching
+        } else {
+          section.classList.add('hidden'); // Hide non-matching sections
+        }
+      });
+    });
+  </script>
+</body>
+</html>

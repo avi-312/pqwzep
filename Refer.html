@@ -1,0 +1,341 @@
+.home {
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-decoration: none;
+  background-color: #5977da;
+  color: #fff;
+  padding: 8px 16px;
+  margin-right: 80%;
+  border: none;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.home:hover {
+  background-color: #f0f0f0;
+  color: #00376b;
+  border-color: #5977da;
+}<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Refer a Candidate</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f8ff;
+      padding: 1rem 0px 0px 0px;
+      color: #333;
+      background-image: url('./images/bg-img.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+     /* Sidebar Styles */
+     .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 250px;
+      height: 100vh;
+      background-color: #5977da;
+      color: #fff;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 1000;
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar .centered-content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 120px;
+    }
+
+    .sidebar .employee-info {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 300px; /* Increased to accommodate photo and text with proper spacing */
+      width: 100%;
+    }
+
+    .sidebar .employee-info .employee-photo {
+      width: 150px;
+      height: 150px;
+      border: 2px solid #007bff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px; /* Added spacing between photo and text */
+      background-image: url('./images/profileicon.png');
+      background-size: 270px 200px; /* Ensures the icon fits within the circle */
+      background-repeat: no-repeat;
+      background-position: center;
+      background-color: #fff;
+    }
+
+    .sidebar .employee-info p {
+      margin: 5px 0;
+      font-size: 1rem; /* Consistent text size */
+    }
+
+    .sidebar .referrals-btn {
+      display: inline-block;
+      background-color: #f2f6f9;
+      color: rgb(62, 51, 211);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      font-weight: bold;
+      margin-top: 50px;
+      cursor: pointer;
+      border: 2px solid #f3f5f6;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .sidebar .referrals-btn:hover {
+      background-color: #58a8f8;
+      transform: translateY(-2px);
+    }
+    .main-content {
+      padding: 0px 0px 0px 0px;
+    }
+
+    .header {
+      background-color: #5977da;
+      color: #fff;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .home {
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-decoration: none;
+  background-color: #5977da;
+  color: #fff;
+  padding: 8px 16px;
+  margin-right: 80%;
+  border: none;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.home:hover {
+  background-color: #f0f0f0;
+  color: #00376b;
+  border-color: #5977da;
+}
+    .hero {
+      color: #362f2f;
+      text-align: center;
+      padding: 100px  ;
+      position: relative;
+      border-radius: 0 0 0px 0;
+      overflow: hidden;
+      margin-top: 10px;
+      margin-left: 290px;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      pointer-events: none;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;s
+    }
+    .hero-content h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    h2 {
+      color: #f3f6f8;
+      margin-top: 20px;
+      padding-top: 60px;
+      text-align: center;
+    }
+    form {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 10px;
+      max-width: 1000px;
+      margin: auto;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+    input, textarea {
+      background-color: #fff;
+      width: 100%;
+      font-size: 18px;
+    padding: 10px;
+      margin-bottom: 1rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      color: #000;
+    }
+    input[readonly] {
+      background-color: rgba(0, 0, 0, 0.08);
+    }
+    .submit-btn {
+      background-color: #0077b6;
+      color: white;
+      padding: 0.8rem 1.5rem;
+      font-size: 15px;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .submit-btn:hover {
+      background-color: #023e8a;
+    }
+    .message {
+      text-align: center;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    .error {
+      color: red;
+    }
+    .success {
+      color: green;
+    }
+  
+
+  </style>
+</head>
+<body>
+  <div class="sidebar" id="sidebar">
+    <div class="centered-content">
+      <div class="employee-info">
+        <div class="employee-photo"></div>
+        <p>ID: EMP10234</p>
+        <p>Name: Priya Sharma</p>
+        <p>Email: priya.sharma@bluerevive.in</p>
+      </div>
+      <a href="index.html" class="referrals-btn">Back To Job Listing</a>
+    </div>
+  </div>
+  <div class="main-content">
+    <div class="header">
+      <div class="logo">BLUE REVIVE</div>
+      <a href="home.htlm" class="home">Home</a>
+    </div>
+    <div class="hero">
+      <div class="hero-content">
+        <p>Join our Team</p>
+        <h1>Blue Revive</h1>
+        <h2>Refer A Candidates</h2>
+      
+    
+
+  <form id="referralForm">
+    <label for="employeeId">Your Employee ID</label>
+    <input type="text" id="employeeId" name="employeeId" value="EMP1234" readonly />
+
+    <label for="jobId">Job ID</label>
+    <input type="text" id="jobId" name="jobId" readonly />
+
+    <label for="jobTitle">Job Title</label>
+    <input type="text" id="jobTitle" name="jobTitle" readonly />
+
+    <label for="candidateName">Candidate Name *</label>
+    <input type="text" id="candidateName" name="candidateName" required />
+
+    <label for="resume">Upload Resume *</label>
+    <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required />
+
+    <label for="comments">Additional Comments</label>
+    <textarea id="comments" name="comments" rows="3"></textarea>
+
+    <button type="submit" class="submit-btn">Submit</button>
+    <div class="message" id="formMessage"></div>
+  </form>
+      </div>
+    </div>
+
+  <script>
+    // Autofill job details from URL
+    const params = new URLSearchParams(window.location.search);
+    document.getElementById('jobId').value = params.get('jobId') || '';
+    document.getElementById('jobTitle').value = params.get('jobTitle') || '';
+
+    const form = document.getElementById('referralForm');
+    const messageDiv = document.getElementById('formMessage');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById('candidateName').value.trim();
+      const resume = document.getElementById('resume').files[0];
+
+      if (!name || !resume) {
+        messageDiv.textContent = "Please fill in all required fields.";
+        messageDiv.className = "message error";
+        return;
+      }
+      const allowedTypes = ['application/pdf'];
+    if (!allowedTypes.includes(resume.type)) {
+      messageDiv.textContent = "Invalid resume format. Please upload PDF file.";
+      messageDiv.className = "message error";
+      return;
+    }
+
+    // Validate file size (e.g., 2MB max)
+    const maxSize = 2 * 1024 * 1024; 
+    if (resume.size > maxSize) {
+      messageDiv.textContent = "File size exceeds 2MB. Please upload a smaller file.";
+      messageDiv.className = "message error";
+      return;
+    }
+
+      // Mock API submission
+      const formData = new FormData(form);
+      // Simulate sending data to backend
+      setTimeout(() => {
+        const success = Math.random() > 0.2; // 80% chance of success
+        if (success) {
+          messageDiv.textContent = "Referral Submitted Successfully!";
+          messageDiv.className = "message success";
+          form.reset();
+        } else {
+          messageDiv.textContent = "Error Submitting Referral. Please try again.";
+          messageDiv.className = "message error";
+        }
+      }, 1000);
+    });
+  </script>
+</body>
+</html>

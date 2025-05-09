@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Referred Candidates</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+      line-height: 1.6;
+    }
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 250px;
+      height: 100vh;
+      background-color: #5977da;
+      color: #fff;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 1000;
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar .centered-content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top:120px;;
+    }
+
+    .sidebar .employee-info {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 300px; /* Increased to accommodate photo and text with proper spacing */
+      width: 100%;
+    }
+
+    .sidebar .employee-info .employee-photo {
+      width: 150px;
+      height: 150px;
+      border: 2px solid #007bff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px; /* Added spacing between photo and text */
+      background-image: url('./images/profileicon.png');
+      background-size: 270px 200px; /* Ensures the icon fits within the circle */
+      background-repeat: no-repeat;
+      background-position: center;
+      background-color: #fff;
+    }
+
+    .sidebar .employee-info p {
+      margin: 5px 0;
+      font-size: 1rem; /* Consistent text size */
+    }
+
+    .sidebar .referrals-btn {
+      display: inline-block;
+      background-color: #f2f6f9;
+      color: rgb(62, 51, 211);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      font-weight: bold;
+      margin-top: 50px;
+      cursor: pointer;
+      border: 2px solid #f3f5f6;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .sidebar .referrals-btn:hover {
+      background-color: #58a8f8;
+      transform: translateY(-2px);
+    }
+
+
+    /* Main Content */
+    .main-content {
+      margin-left: 250px;
+      padding: 10px;
+    }
+
+    .header {
+      background-color: #5977da;
+      color: #fff;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 15px;
+    }
+
+    .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    .hero {
+      background-image: url('./images/bg-img.jpg');
+      background-size: cover;
+      background-position: center;
+      color: #fff;
+      text-align: center;
+      padding: 100px 20px;
+      position: relative;
+      border-radius: 0 0 50px 0;
+      overflow: hidden;
+      margin-top: 70px;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-content .search-bar {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .hero-content .search-bar input {
+      width: 300px;
+      padding: 10px;
+      border: 2px solid #0077b6;
+      border-radius: 5px;
+      font-size: 1rem;
+      background-color: transparent;
+      color: #fff;
+      outline: none;
+    }
+
+    .hero-content .search-bar input::placeholder {
+      color: #ccc;
+    }
+
+    .hero-content h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    h2{
+    color: #f3f6f8;
+      margin-top: 10px;
+      padding-top: 30px;
+      text-align: center;
+    }
+    .referred-candidates-container {
+      padding: 20px;
+      max-width: 800px;
+      margin: 20px auto;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .candidate-list {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .candidate-item {
+      background-color: transparent;
+      padding: 25px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .candidate-item:hover {
+      transform: translateY(-3px);
+    }
+
+    .candidate-item p {
+      margin: 5px 0;
+    }
+
+    .candidate-item p strong {
+      color: #555;
+    }
+
+    .candidate-item a {
+      color: #0077b6;
+      text-decoration: none;
+    }
+
+    .candidate-item a:hover {
+      text-decoration: underline;
+    }
+
+    .candidate-item.hidden {
+      display: none; /* Hide non-matching candidate items */
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .header {
+        padding: 15px;
+      }
+
+      .nav-links {
+        gap: 10px;
+      }
+
+      .nav-links a {
+        font-size: 0.9rem;
+      }
+
+      .hero {
+        padding: 80px 20px;
+      }
+
+      .hero-content h1 {
+        font-size: 2rem;
+      }
+
+      .hero-content .search-bar input {
+        width: 200px;
+      }
+
+      .referred-candidates-container {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar" id="sidebar">
+    <div class="centered-content">
+      <div class="employee-info">
+        <div class="employee-photo"></div>
+        <p>ID: EMP10234</p>
+        <p>Name: Priya Sharma</p>
+        <p>Email: priya.sharma@bluerevive.in</p>
+      </div>
+      <a href="index.html" class="referrals-btn">Back To Job Listing</a>
+    </div>
+  </div>
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="header">
+      <div class="logo">BLUE REVIVE</div>
+
+    </div>
+    
+    <div class="hero">
+      <div class="hero-content">
+        <div class="search-bar">
+          <input type="text" id="searchInput" placeholder="Search referrals...">
+        </div>
+        <p>Join our Team</p>
+        <h1>Blue Revive</h1>
+        <h2>Referred Candidates</h2>
+      </div>
+    </div>
+
+    <div class="referred-candidates-container">
+      <ul class="candidate-list">
+        <!-- Candidate Item 1 -->
+        <li class="candidate-item">
+          <p><strong>Job ID:</strong> 1021</p>
+          <p><strong>Job Title:</strong>Product Lifecycle Manager</p>
+          <p><strong>Candidate Name:</strong> John Doe</p>
+          <p><strong>Candidate Resume:</strong> <a href="resume_john_doe.pdf">View Resume</a></p>
+          <p><strong>Referral Date:</strong> April 18, 2025</p>
+        </li>
+
+        <!-- Candidate Item 2 -->
+        <li class="candidate-item">
+          <p><strong>Job ID:</strong> 1205</p>
+          <p><strong>Job Title:</strong>Database Engineer (Fresher)</p>
+          <p><strong>Candidate Name:</strong> Jane Smith</p>
+          <p><strong>Candidate Resume:</strong> <a href="resume_jane_smith.pdf">View Resume</a></p>
+          <p><strong>Referral Date:</strong> April 17, 2025</p>
+        </li>
+
+        <!-- Candidate Item 3 -->
+        <li class="candidate-item">
+          <p><strong>Job ID:</strong> 1023</p>
+          <p><strong>Job Title:</strong>HR Professional</p>
+          <p><strong>Candidate Name:</strong> Arjun Patel</p>
+          <p><strong>Candidate Resume:</strong> <a href="resume_arjun_patel.pdf">View Resume</a></p>
+          <p><strong>Referral Date:</strong> April 16, 2025</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- JavaScript for Search Functionality -->
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const candidateItems = document.querySelectorAll('.candidate-item');
+
+    // Search functionality
+    searchInput.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase().trim();
+
+      candidateItems.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (searchTerm === '' || text.includes(searchTerm)) {
+          item.classList.remove('hidden'); // Show item if empty or matching
+        } else {
+          item.classList.add('hidden'); // Hide non-matching items
+        }
+      });
+    });
+  </script>
+</body>
+</html>
